@@ -1,62 +1,351 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import BaseHead from '../components/BaseHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
+<!doctype html>
+<html lang="en">
+   <head>
+      <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+      <style>
+        a {
+          color: inherit; /* blue colors for links too */
+          text-decoration: inherit; /* no underline */
+        }
+        /* Base Colors */
+        :root {
+            --white: #FFFFFF;
+            --black: #000000;
+            --darkgray: #333333;
+            --gray: #5D5D5D;
+            --lightgray: #999999;
+            --green: #C2E15F;
+            --orange: #FDA333;
+            --purple: #D3A4F9;
+            --red: #FB4485;
+            --blue: #6CE0F1;
+            --darktext: #414141;
+            --text: var(--darkgray);
+            --graytext: var(--gray);
+            --lighttext: var(--lightgray);
+            --awesome: #DC3522;
+        }
+        
+        /* Fonts */
+        @font-face {
+            font-family: "Roboto";
+            src: url("/Roboto-Regular.ttf");
+        }
+        
+        @font-face {
+            font-family: "Roboto Light";
+            src: url("/Roboto-Thin.ttf");
+        }
+        
+        .header-firstname-style {
+            font-size: 32pt;
+            font-family: "Roboto Light", sans-serif;
+            color: var(--graytext);
+        }
+        
+        .header-lastname-style {
+            font-size: 32pt;
+            font-family: "Roboto", sans-serif;
+            font-weight: bold;
+            color: var(--text);
+        }
+        
+        .header-position-style {
+            font-size: 7.6pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-variant: small-caps;
+            color: var(--awesome);
+        }
+        
+        .header-address-style {
+            font-size: 8pt;
+            font-family: "Roboto", sans-serif;
+            font-style: italic;
+            color: var(--lighttext);
+        }
+        
+        .header-social-style {
+            font-size: 6.8pt;
+            font-family: "Roboto", sans-serif;
+            color: var(--text);
+        }
+        
+        .header-quote-style {
+            font-size: 9pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-style: italic;
+            color: var(--darktext);
+        }
+        
+        .footer-style {
+            font-size: 8pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-variant: small-caps;
+            color: var(--lighttext);
+        }
+        
+        .section-style {
+            font-size: 16pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: bold;
+            color: var(--text);
+        }
+        
+        .subsection-style {
+            font-size: 12pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-variant: small-caps;
+            color: var(--text);
+        }
+        
+        .paragraph-style {
+            font-size: 9pt;
+            font-family: "Source Sans Pro Light", sans-serif;
+            color: var(--text);
+        }
+        
+        .entry-title-style {
+            font-size: 10pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-weight: bold;
+            color: var(--darktext);
+        }
+        
+        .entry-position-style {
+            font-size: 8pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-variant: small-caps;
+            color: var(--graytext);
+        }
+        
+        .entry-date-style {
+            font-size: 8pt;
+            font-family: "Source Sans Pro Light", sans-serif;
+            font-style: italic;
+            color: var(--graytext);
+        }
+        
+        .entry-location-style {
+            font-size: 9pt;
+            font-family: "Source Sans Pro Light", sans-serif;
+            font-style: italic;
+            color: var(--awesome);
+        }
+        
+        .description-style {
+            font-size: 9pt;
+            font-family: "Source Sans Pro Light", sans-serif;
+            color: var(--text);
+        }
+        
+        .subentry-title-style {
+            font-size: 8pt;
+            font-family: "Source Sans Pro", sans-serif;
+            color: var(--graytext);
+        }
+        
+        .subentry-position-style {
+            font-size: 7pt;
+            font-family: "Source Sans Pro", sans-serif;
+            font-variant: small-caps;
+            color: var(--graytext);
+        }
+        
+        .honor-title-style,
+        .honor-position-style,
+        .honor-date-style,
+        .honor-location-style,
+        .skill-type-style,
+        .skill-set-style {
+            font-size: 9pt;
+            font-family: "Source Sans Pro", sans-serif;
+            color: var(--graytext);
+        }
+        
+        .letter-section-style,
+        .recipient-title-style,
+        .letter-title-style,
+        .letter-date-style,
+        .letter-text-style,
+        .letter-name-style,
+        .letter-enclosure-style {
+            font-family: "Source Sans Pro", sans-serif;
+        }
 
-<Layout
-	title="About Me"
-	description="Lorem ipsum dolor sit amet"
-	pubDate={new Date('August 08 2021')}
-	heroImage="/blog-placeholder-about.jpg"
->
-	<p>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-		labore et dolore magna aliqua. Vitae ultricies leo integer malesuada nunc vel risus commodo
-		viverra. Adipiscing enim eu turpis egestas pretium. Euismod elementum nisi quis eleifend quam
-		adipiscing. In hac habitasse platea dictumst vestibulum. Sagittis purus sit amet volutpat. Netus
-		et malesuada fames ac turpis egestas. Eget magna fermentum iaculis eu non diam phasellus
-		vestibulum lorem. Varius sit amet mattis vulputate enim. Habitasse platea dictumst quisque
-		sagittis. Integer quis auctor elit sed vulputate mi. Dictumst quisque sagittis purus sit amet.
-	</p>
+        .info {
+          text-align: center;
+        }
 
-	<p>
-		Morbi tristique senectus et netus. Id semper risus in hendrerit gravida rutrum quisque non
-		tellus. Habitasse platea dictumst quisque sagittis purus sit amet. Tellus molestie nunc non
-		blandit massa. Cursus vitae congue mauris rhoncus. Accumsan tortor posuere ac ut. Fringilla urna
-		porttitor rhoncus dolor. Elit ullamcorper dignissim cras tincidunt lobortis. In cursus turpis
-		massa tincidunt dui ut ornare lectus. Integer feugiat scelerisque varius morbi enim nunc.
-		Bibendum neque egestas congue quisque egestas diam. Cras ornare arcu dui vivamus arcu felis
-		bibendum. Dignissim suspendisse in est ante in nibh mauris. Sed tempus urna et pharetra pharetra
-		massa massa ultricies mi.
-	</p>
+        .flex-box {
+          display: flex;
+          justify-content: space-between;
+        }
+      </style>
+   </head>
+   <body>
+      <Header />
+      <main>
+        <div class="info">
+          <p><span class="header-firstname-style"> JUNTAE </span><span class="header-lastname-style">PARK</span><p>
+          <p class="header-position-style"> FULL STACK DEVELOPER · SOFTWARE ENGINEER </p>
+          <div class="header-address-style"> 
+            CA, USA
+          </div>
+          <div class="header-social-style">
+            <p> 437-580-8026 | <a href="mailto:parkjune1995@gmail.com"> parkjune1995@gmail.com </a>| <a href="https://github.com/mrjunejune"> mrjunejune </a>| <a href="https://www.linkedin.com/in/junepark"> junepark</a></p>
+          </div>
+        </div>
 
-	<p>
-		Mollis nunc sed id semper risus in. Convallis a cras semper auctor neque. Diam sit amet nisl
-		suscipit. Lacus viverra vitae congue eu consequat ac felis donec. Egestas integer eget aliquet
-		nibh praesent tristique magna sit amet. Eget magna fermentum iaculis eu non diam. In vitae
-		turpis massa sed elementum. Tristique et egestas quis ipsum suspendisse ultrices. Eget lorem
-		dolor sed viverra ipsum. Vel turpis nunc eget lorem dolor sed viverra. Posuere ac ut consequat
-		semper viverra nam. Laoreet suspendisse interdum consectetur libero id faucibus. Diam phasellus
-		vestibulum lorem sed risus ultricies tristique. Rhoncus dolor purus non enim praesent elementum
-		facilisis. Ultrices tincidunt arcu non sodales neque. Tempus egestas sed sed risus pretium quam
-		vulputate. Viverra suspendisse potenti nullam ac tortor vitae purus faucibus ornare. Fringilla
-		urna porttitor rhoncus dolor purus non. Amet dictum sit amet justo donec enim.
-	</p>
+        <h2 class="section-style"> Summary </h2>
+        <p class="paragraph-style"> Software Engineer with experience ranging from small companies to FANG, skilled in various frameworks and languages. Seeking interesting opportunities and contract work.</p>
+        <h2 class="section-style"> Skills </h2>
+        <div class="paragraph-style">
+          <p>
+            <span class="entry-title-style"> Web Frameworks: </span>
+            <span class="skill-type-style"> Django, Rails, React, Flask</span>
+          </p>
+          <p>
+            <span class="entry-title-style"> Programming:</span>
+            <span class="skill-type-style"> TypeScript/Javascript, Python, C++/C, Ruby, MATLAB, Java </span>
+          </p>
+          <p>
+            <span class="entry-title-style"> Language:</span>
+            <span class="skill-type-style"> English, Korean, Japanese </span>
+          </p>
+          <p>
+            <span class="entry-title-style"> DevOp:</span>
+            <span class="skill-type-style"> Heroku, DigitalOcean, AWS, Google Cloud </span>
+          </p>
+        </div>
+        <h2 class="section-style"> Experience </h2>
+        <!-- Experiences -->
+        <div class="flex-box">
+          <p class="entry-title-style">
+            <a href="https://www.meta.com/">Meta</a>
+          </p>
+          <p class="entry-location-style">San Francisco, CA, USA</p>
+        </div>
+        <div class="flex-box">
+          <p class="entry-position-style">SOFTWARE ENGINEER</p>
+          <p class="entry-date-style">Oct, 2024 - Present</p>
+        </div>
+        <p class="description-style">
+         · Just joined, writing react test framework to imporve engineers' productivity.
+        </p>
 
-	<p>
-		Mattis ullamcorper velit sed ullamcorper morbi tincidunt. Tortor posuere ac ut consequat semper
-		viverra. Tellus mauris a diam maecenas sed enim ut sem viverra. Venenatis urna cursus eget nunc
-		scelerisque viverra mauris in. Arcu ac tortor dignissim convallis aenean et tortor at. Curabitur
-		gravida arcu ac tortor dignissim convallis aenean et tortor. Egestas tellus rutrum tellus
-		pellentesque eu. Fusce ut placerat orci nulla pellentesque dignissim enim sit amet. Ut enim
-		blandit volutpat maecenas volutpat blandit aliquam etiam. Id donec ultrices tincidunt arcu. Id
-		cursus metus aliquam eleifend mi.
-	</p>
+        <div class="flex-box">
+          <p class="entry-title-style">
+            <a href="https://www.wmg.com/">Warner Music Group</a>
+          </p>
+          <p class="entry-location-style">Toronto, ON, Canada</p>
+        </div>
+        <div class="flex-box">
+          <p class="entry-position-style">TECHNICAL LEAD ENGINEER</p>
+          <p class="entry-date-style">July, 2023 - July, 2024</p>
+        </div>
+        <p class="description-style">
+          · Implements <a href="https://bazel.build/">bazel </a>structure for the company for TypeScript and JavaScript code base for hermiticity and stablishing standards for JavaScript and<br>
+          TypeScript testing and code structures.<br>
+          · Led a team of five engineers in building GraphQL endpoints for client-facing applications using Apollo and AppSync, supporting over 60,000<br>
+          concurrent users and auto scaling depending on request values.<br>
+          · Improved application response times by up to 85% for graphQL response by updating database schema and SQL queries, eliminating N+1 queries<br>
+          and lack of indexes.<br>
+          · Developed CI/CD pipelines for backend structures.<br>
+          · Designed infrastructure for pub/sub, caching, and media processing logic.<br>
+        </p>
 
-	<p>
-		Tempus quam pellentesque nec nam aliquam sem. Risus at ultrices mi tempus imperdiet. Id porta
-		nibh venenatis cras sed felis eget velit. Ipsum a arcu cursus vitae. Facilisis magna etiam
-		tempor orci eu lobortis elementum. Tincidunt dui ut ornare lectus sit. Quisque non tellus orci
-		ac. Blandit libero volutpat sed cras. Nec tincidunt praesent semper feugiat nibh sed pulvinar
-		proin gravida. Egestas integer eget aliquet nibh praesent tristique magna.
-	</p>
-</Layout>
+        <div class="flex-box">
+          <p class="entry-title-style">
+            <a href="https://www.google.com/">Google</a>
+          </p>
+          <p class="entry-location-style">Toronto, ON, Canada</p>
+        </div>
+        <div class="flex-box">
+          <p class="entry-position-style">SOFTWARE ENGINEER</p>
+          <p class="entry-date-style">Feb, 2022 - July 2023</p>
+        </div>
+        <p class="description-style">
+          · Implements and maintained new features relating to App Script across google workspace platform including Gmail, sheets, and Docs.<br>
+          · Improved a response time and render time of App Script hover card components.<br>
+          · Collaborated with a team of developers to ensure timely and accurate delivery of features.<br>
+          · Conducted user testing and gathered feedback to iterate on features for optimal user experience.<br>
+        </p>
+
+        <div class="flex-box">
+          <p class="entry-title-style">
+            <a href="https://www.everlywell.com/">Everlywell</a>
+          </p>
+          <p class="entry-location-style">Toronto, ON, Canada</p>
+        </div>
+        <div class="flex-box">
+          <p class="entry-position-style">SOFTWARE ENGINEER</p>
+          <p class="entry-date-style">December, 2020 - Jan, 2022</p>
+        </div>
+        <p class="description-style">
+          · Maintained Amazon amplify apps to create and deploy React web applications for companies such as <a href="https://brooklynnets.everlywell.com/">NBA</a>, <a href="https://tinder.everlywell.com/">Tinder</a>, and other companies for COVID-<br>
+          19 at-home test kits.<br>
+          · Implemented a script that helps accurately access and refund unused covid test kits; helping company save up to 200,000 USD.<br>
+          · Created several Rails controllers for internal purposes; mocking end to end user experience for QA, mass refund features for CX department, and<br>
+          more, ultimately reducing support tickets amount by 50 percent.<br>
+          · Implemented an audit table to help debug problems and logged which process was responsible for the change of the record using PaperTrail gems<br>
+        </p>
+
+        <div class="flex-box">
+          <p class="entry-title-style">
+            <a href="https://www.spiria.com/">Spiria</a>
+          </p>
+          <p class="entry-location-style">Oakvile, ON, Canada</p>
+        </div>
+        <div class="flex-box">
+          <p class="entry-position-style">SOFTWARE ENGINEER</p>
+          <p class="entry-date-style">October, 2018 - October, 2020</p>
+        </div>
+        <p class="description-style">
+          · Constructed RESTful API endpoints in multiple different frameworks such as Django, Ruby on Rails, and Flask and automated API documentation<br>
+          process using swagger.<br>
+          · Designed custom rake tasks for importing production data into newly updated data structure to meet client's needs.<br>
+          · Maintained or updated staging/productions servers. Debugged problems in production postgres database using ssh and postgres console on<br>
+          Heroku or AWS servers<br>
+          · Collaborated in creating automation python scripts for websites and application using selenium covering for QA eliminating 80% of QA's manual work<br>
+        </p>
+
+        <div class="flex-box">
+          <p class="entry-title-style">
+            <a href="https://www.apexscore.ai/">Apex Score</a>
+          </p>
+          <p class="entry-location-style">Oakvile, ON, Canada</p>
+        </div>
+        <div class="flex-box">
+          <p class="entry-position-style">SOFTWARE ENGINEER (PART TIME)</p>
+          <p class="entry-date-style">September, 2019 - October, 2020</p>
+        </div>
+        <p class="description-style">
+          · Developed custom Shapley value regression model to calculate importance of independent variables of data sets using sklearn, pandas, and<br>
+          numpy.<br>
+          · Created custom image uploader to Amazon s3 bucket using boto3 library.<br>
+          · Built RESTful API application using Flask framework and automated extensive API documentation pages using flask-restplus, pytest, and swagger,<br>
+          covering 95% of the code base.<br>
+          · Created an interactive graph using D3.js in Vue.js with data from Flask backend API. 
+        </p>
+
+        <h2 class="section-style"> Education </h2>
+        <div class="flex-box">
+          <p class="entry-title-style">
+            University of British Columbia
+          </p>
+          <p class="entry-location-style">Kelowna, British Columbia</p>
+        </div>
+        <div class="flex-box">
+          <p class="entry-position-style">BACHELOR OF SCIENCE IN PHYSICS</p>
+          <p class="entry-date-style">2014 - 2018</p>
+        </div>
+      </main>
+      <Footer />
+   </body>
+</html>

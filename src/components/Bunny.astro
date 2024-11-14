@@ -1,0 +1,23 @@
+<!-- 
+This is loaded for bunny blogs.
+-->
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+<script src='/raylib.js' client:load></script>
+<canvas id='bunnies'></canvas>
+<script client:load>
+  async function startRaylib() {
+    if (typeof RaylibJs !== 'undefined') {
+      const raylibjs = new RaylibJs();
+      raylibjs.start({
+        wasmPath: '/web.wasm',
+        canvasId: 'bunnies',
+      });
+    } else {
+      console.error('RaylibJs is not loaded');
+    }
+  }
+
+  // Ensure raylib.js is loaded, then initialize
+  window.addEventListener('load', startRaylib);
+</script>
+</div>

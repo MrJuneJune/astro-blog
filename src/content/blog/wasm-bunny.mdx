@@ -1,0 +1,25 @@
+---
+title: 'WASM using c3'
+description: 'Learning about WASM and making small interactive application'
+pubDate: 'Nov 13 2024'
+heroImage: '/blog-placeholder-5.jpg'
+---
+
+Hi, this is my first blog on this websites and hopefully many to come as I don't really have much to do with my life.
+
+Today, I spend few hours poking around with programming langauge called c3 and linking it with [Raylib](link to raylib), popular web library.
+I wanted to create something that is interactive and be able to upload to web without much hassle.
+
+I have already created a repo for linking c3 with raylib and stress testing it using bunny rendering which I saw in being used [before](https://old.reddit.com/r/raylib/comments/15jy1x3/raylib_bunnymark_benchmark_with_100k_bunnies/)
+
+There were few things to watch out for when compiling into wasm.
+
+ - You need to add your own raylib.js file that handles raylib APIs such as isKeyPressed etcs...
+ - You need to update c files so that it does not include any std since it will break in wasm as it doesn't have std init (hopefully I can add a flag in compile to handle std function for c3 in the future?)
+
+ Results are below. It is somewhat a fun project.
+
+
+import Bunny from '../../components/Bunny.astro';
+
+<Bunny />
