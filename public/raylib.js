@@ -1,5 +1,6 @@
 /**
- * I Stole this from tsoding and added few functions for functionality.
+ * I Stole this from https://github.com/tsoding/c3-demo/blob/main/raylib.js and added few functions for functionality.
+ * It seems to be from raylib.com/examples
  */
 function make_environment(env) {
   return new Proxy(env, {

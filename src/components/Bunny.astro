@@ -2,9 +2,9 @@
 This is loaded for bunny blogs.
 -->
 <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
-<script src='/raylib.js' client:load></script>
+<script src='/raylib.js' is:inline></script>
 <canvas id='bunnies'></canvas>
-<script client:load>
+<script is:inline>
   async function startRaylib() {
     if (typeof RaylibJs !== 'undefined') {
       const raylibjs = new RaylibJs();

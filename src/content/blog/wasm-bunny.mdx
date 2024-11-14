@@ -5,20 +5,85 @@ pubDate: 'Nov 13 2024'
 heroImage: '/bunny-coding-2.webp'
 ---
 
-Hi, this is my first blog on this websites and hopefully many to come as I don't really have much to do with my life.
+**First Steps with C3 and Raylib on WebAssembly**
 
-Today, I spend few hours poking around with programming langauge called c3 and linking it with [Raylib](link to raylib), popular web library.
-I wanted to create something that is interactive and be able to upload to web without much hassle.
+Hi! This is my first blog post on this website, and hopefully, it’s the first of many, as I have some free time at the moment.
 
-I have already created a repo for linking c3 with raylib and stress testing it using bunny rendering which I saw in being used [before](https://old.reddit.com/r/raylib/comments/15jy1x3/raylib_bunnymark_benchmark_with_100k_bunnies/)
+Today, I spent a few hours experimenting with the programming language [C3](https://c3-lang.org/) and linking it with a static file from [Raylib](https://www.raylib.com/), a popular library for creating web applications. My goal was to build something interactive and deploy it to the web with minimal hassle.
 
-There were few things to watch out for when compiling into wasm.
+I’ve set up a repository to link C3 with Raylib and stress-test it using a bunny-rendering benchmark, inspired by this [bunnymark benchmark](https://old.reddit.com/r/raylib/comments/15jy1x3/raylib_bunnymark_benchmark_with_100k_bunnies/).
 
- - You need to add your own raylib.js file that handles raylib APIs such as isKeyPressed etcs...
- - You need to update c files so that it does not include any std since it will break in wasm as it doesn't have std init (hopefully I can add a flag in compile to handle std function for c3 in the future?)
+Here are some key things to keep in mind when compiling C3 and Raylib to WebAssembly (WASM):
 
- Results are below. It is somewhat a fun project.
+1. **Limited WASM Support in C3**:  
+   C3 has limited support for compiling to [WASM](https://c3-lang.org/faq/#platform-support). The standard library isn't usable in WASM, so any standard functions need to be rewritten or excluded. For example, I attempted to randomly assign colors to a rabbit, but there was no compile-time error, so I had to debug why WASM wasn’t loading properly. In hindsight, I should have known, given that the `--link-libc=no` flag was used in the examples.
 
+   Example command:
+   ```
+   c3c compile --reloc=none --target wasm32 -g0 --link-libc=no --no-entry main.c3 raylib.c3
+   ```
+
+2. **Custom Raylib JavaScript File**:  
+   Raylib APIs need to be called through a custom `raylib.js` file. As shown in the command above, there’s no static Raylib file (`raylib.a`) linked directly to WASM. Instead, Raylib APIs are accessed through JavaScript using [WebAssembly.instantiateStreaming](https://developer.mozilla.org/en-US/docs/WebAssembly/JavaScript_interface/instantiateStreaming_static). For example, `raylib::init_window` would be called in JavaScript like this:
+
+   ```javascript
+   function InitWindow(width, height, title_ptr) {
+     this.ctx.canvas.width = width;
+     this.ctx.canvas.height = height;
+     const buffer = this.wasm.instance.exports.memory.buffer;
+     document.title = cstr_by_ptr(buffer, title_ptr);
+   }
+
+   const raylibObject = {
+     raylib: { InitWindow: InitWindow },
+   };
+
+   WebAssembly.instantiateStreaming(fetch("main.wasm"), raylibObject).then(
+     (obj) => obj.instance.exports.exported_func(),
+   );
+   ```
+
+   To actaully link it together, I was lucky to find raylib.js [this repo](https://github.com/tsoding/c3-demo/blob/main/raylib.js) (Thanks tsoding!!). I only needed to add a few functions for handling clicks. The file had `RaylibJs` class which need to be turned into object from above example and used `Proxy` class to do that. I actaully never seen that API being used outside of this.
+
+   ```javascript
+   function make_environment(env) {
+     return new Proxy(env, {
+       get(_target, prop, _receiver) {
+         if (env[prop] !== undefined) {
+           return env[prop].bind(env);
+         }
+         return (...args) => {
+           throw new Error(`NOT IMPLEMENTED: ${prop} ${args}`);
+         };
+       },
+     });
+   }
+
+   class RaylibJs {
+      // will have all raylib functions 
+      ...
+
+      IsMouseButtonPressed(key) {
+        return this.currentIsMouseButtonPressed == key;
+      }
+
+      // entrypoints to fetch wasm and start it.
+      start(wasmPath, canvasId) {
+        ...
+
+        this.wasm = await WebAssembly.instantiateStreaming(fetch(wasmPath), {
+          env: make_environment(this),
+        });
+
+        // Call the main functions from wasm object
+        this.wasm.instance.exports.main();
+      }
+    }
+   ```
+
+Overall, this was an interesting project to spend a few hours on, and maybe in the future, I’ll explore compiling the C3 standard library to WASM.
+
+Below are the results!
 
 import Bunny from '../../components/Bunny.astro';
 
