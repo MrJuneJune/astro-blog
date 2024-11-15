@@ -7,346 +7,365 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
 <!doctype html>
 <html lang="en">
-   <head>
-      <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-      <style>
-        a {
-          color: inherit; /* blue colors for links too */
-          text-decoration: inherit; /* no underline */
-        }
-        /* Base Colors */
-        :root {
-            --white: #FFFFFF;
-            --black: #000000;
-            --darkgray: #333333;
-            --gray: #5D5D5D;
-            --lightgray: #999999;
-            --green: #C2E15F;
-            --orange: #FDA333;
-            --purple: #D3A4F9;
-            --red: #FB4485;
-            --blue: #6CE0F1;
-            --darktext: #414141;
-            --text: var(--darkgray);
-            --graytext: var(--gray);
-            --lighttext: var(--lightgray);
-            --awesome: #DC3522;
-        }
-        
-        /* Fonts */
-        @font-face {
-            font-family: "Roboto";
-            src: url("/Roboto-Regular.ttf");
-        }
-        
-        @font-face {
-            font-family: "Roboto Light";
-            src: url("/Roboto-Thin.ttf");
-        }
-        
-        .header-firstname-style {
-            font-size: 32pt;
-            font-family: "Roboto Light", sans-serif;
-            color: var(--graytext);
-        }
-        
-        .header-lastname-style {
-            font-size: 32pt;
-            font-family: "Roboto", sans-serif;
-            font-weight: bold;
-            color: var(--text);
-        }
-        
-        .header-position-style {
-            font-size: 7.6pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-variant: small-caps;
-            color: var(--awesome);
-        }
-        
-        .header-address-style {
-            font-size: 8pt;
-            font-family: "Roboto", sans-serif;
-            font-style: italic;
-            color: var(--lighttext);
-        }
-        
-        .header-social-style {
-            font-size: 6.8pt;
-            font-family: "Roboto", sans-serif;
-            color: var(--text);
-        }
-        
-        .header-quote-style {
-            font-size: 9pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-style: italic;
-            color: var(--darktext);
-        }
-        
-        .footer-style {
-            font-size: 8pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-variant: small-caps;
-            color: var(--lighttext);
-        }
-        
-        .section-style {
-            font-size: 16pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-weight: bold;
-            color: var(--text);
-        }
-        
-        .subsection-style {
-            font-size: 12pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-variant: small-caps;
-            color: var(--text);
-        }
-        
-        .paragraph-style {
-            font-size: 9pt;
-            font-family: "Source Sans Pro Light", sans-serif;
-            color: var(--text);
-        }
-        
-        .entry-title-style {
-            font-size: 10pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-weight: bold;
-            color: var(--darktext);
-        }
-        
-        .entry-position-style {
-            font-size: 8pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-variant: small-caps;
-            color: var(--graytext);
-        }
-        
-        .entry-date-style {
-            font-size: 8pt;
-            font-family: "Source Sans Pro Light", sans-serif;
-            font-style: italic;
-            color: var(--graytext);
-        }
-        
-        .entry-location-style {
-            font-size: 9pt;
-            font-family: "Source Sans Pro Light", sans-serif;
-            font-style: italic;
-            color: var(--awesome);
-        }
-        
-        .description-style {
-            font-size: 9pt;
-            font-family: "Source Sans Pro Light", sans-serif;
-            color: var(--text);
-        }
-        
-        .subentry-title-style {
-            font-size: 8pt;
-            font-family: "Source Sans Pro", sans-serif;
-            color: var(--graytext);
-        }
-        
-        .subentry-position-style {
-            font-size: 7pt;
-            font-family: "Source Sans Pro", sans-serif;
-            font-variant: small-caps;
-            color: var(--graytext);
-        }
-        
-        .honor-title-style,
-        .honor-position-style,
-        .honor-date-style,
-        .honor-location-style,
-        .skill-type-style,
-        .skill-set-style {
-            font-size: 9pt;
-            font-family: "Source Sans Pro", sans-serif;
-            color: var(--graytext);
-        }
-        
-        .letter-section-style,
-        .recipient-title-style,
-        .letter-title-style,
-        .letter-date-style,
-        .letter-text-style,
-        .letter-name-style,
-        .letter-enclosure-style {
-            font-family: "Source Sans Pro", sans-serif;
-        }
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  <style>
+    .sub-header {
+      display: flex;
+      margin-top: 20px;
+      align-items: center;
+      gap: 5px; /* Adjusts the spacing between elements */
+    }
+    .line {
+      flex-grow: 1;
+      border-bottom: 1px solid #333; /* Adjust color and thickness as needed */
+    }
+     .header-firstname-style {
+         font-size: 32pt;
+         font-family: "Roboto Light", sans-serif;
+         color: var(--graytext);
+     }
+     
+     .header-lastname-style {
+         font-size: 32pt;
+         font-family: "Roboto", sans-serif;
+         font-weight: bold;
+         color: var(--text);
+     }
+     
+     .header-position-style {
+         font-size: 7.6pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-variant: small-caps;
+         color: var(--awesome);
+     }
+     
+     .header-address-style {
+         font-size: 8pt;
+         font-family: "Roboto", sans-serif;
+         font-style: italic;
+         color: var(--lighttext);
+     }
+     
+     .header-social-style {
+         font-size: 6.8pt;
+         font-family: "Roboto", sans-serif;
+         color: var(--text);
+     }
+     
+     .header-quote-style {
+         font-size: 9pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-style: italic;
+         color: var(--darktext);
+     }
+     
+     .footer-style {
+         font-size: 8pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-variant: small-caps;
+         color: var(--lighttext);
+     }
+     
+     .section-style {
+         font-size: 16pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-weight: bold;
+         color: var(--text);
+     }
+     
+     .subsection-style {
+         font-size: 12pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-variant: small-caps;
+         color: var(--text);
+     }
+     
+     .paragraph-style {
+         font-size: 9pt;
+         font-family: "Source Sans Pro Light", sans-serif;
+         color: var(--text);
+     }
+     
+     .entry-title-style {
+         font-size: 10pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-weight: bold;
+         color: var(--darktext);
+     }
+     
+     .entry-position-style {
+         font-size: 8pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-variant: small-caps;
+         color: var(--graytext);
+     }
+     
+     .entry-date-style {
+         font-size: 8pt;
+         font-family: "Source Sans Pro Light", sans-serif;
+         font-style: italic;
+         color: var(--graytext);
+     }
+     
+     .entry-location-style {
+         font-size: 9pt;
+         font-family: "Source Sans Pro Light", sans-serif;
+         font-style: italic;
+         color: var(--awesome);
+     }
+     
+     .description-style {
+         font-size: 9pt;
+         font-family: "Source Sans Pro Light", sans-serif;
+         color: var(--text);
+     }
+     
+     .subentry-title-style {
+         font-size: 8pt;
+         font-family: "Source Sans Pro", sans-serif;
+         color: var(--graytext);
+     }
+     
+     .subentry-position-style {
+         font-size: 7pt;
+         font-family: "Source Sans Pro", sans-serif;
+         font-variant: small-caps;
+         color: var(--graytext);
+     }
+     
+     .honor-title-style,
+     .honor-position-style,
+     .honor-date-style,
+     .honor-location-style,
+     .skill-type-style,
+     .skill-set-style {
+         font-size: 9pt;
+         font-family: "Source Sans Pro", sans-serif;
+         color: var(--graytext);
+     }
+     
+     .letter-section-style,
+     .recipient-title-style,
+     .letter-title-style,
+     .letter-date-style,
+     .letter-text-style,
+     .letter-name-style,
+     .letter-enclosure-style {
+         font-family: "Source Sans Pro", sans-serif;
+     }
+  
+     .info {
+       text-align: center;
+     }
+  
+     .flex-box {
+       display: flex;
+       justify-content: space-between;
+     }
+  </style>
+  </head>
+  <body>
+     <Header />
+     <main>
+       <div class="info">
+         <p><span class="header-firstname-style"> JUNTAE </span><span class="header-lastname-style">PARK</span><p>
+         <p class="header-position-style"> FULL STACK DEVELOPER · SOFTWARE ENGINEER </p>
+         <div class="header-address-style"> 
+           CA, USA
+         </div>
+         <div class="header-social-style">
+           <p> 437-580-8026 | <a href="mailto:parkjune1995@gmail.com"> parkjune1995@gmail.com </a>| <a href="https://github.com/mrjunejune"> mrjunejune </a>| <a href="https://www.linkedin.com/in/junepark"> junepark</a></p>
+         </div>
+       </div>
 
-        .info {
-          text-align: center;
-        }
+       <div class="sub-header">
+         <h2 class="section-style"> Summary </h2>
+         <div class="line"></div>
+       </div>
+       <p class="paragraph-style"> Software Engineer with experience ranging from small companies to FANG, skilled in various frameworks and languages. Seeking interesting opportunities and contract work.</p>
+       <div class="sub-header">
 
-        .flex-box {
-          display: flex;
-          justify-content: space-between;
-        }
-      </style>
-   </head>
-   <body>
-      <Header />
-      <main>
-        <div class="info">
-          <p><span class="header-firstname-style"> JUNTAE </span><span class="header-lastname-style">PARK</span><p>
-          <p class="header-position-style"> FULL STACK DEVELOPER · SOFTWARE ENGINEER </p>
-          <div class="header-address-style"> 
-            CA, USA
-          </div>
-          <div class="header-social-style">
-            <p> 437-580-8026 | <a href="mailto:parkjune1995@gmail.com"> parkjune1995@gmail.com </a>| <a href="https://github.com/mrjunejune"> mrjunejune </a>| <a href="https://www.linkedin.com/in/junepark"> junepark</a></p>
-          </div>
-        </div>
+         <h2 class="section-style"> Skills </h2>
+         <div class="line"></div>
+       </div>
+       <div class="paragraph-style">
+         <p>
+           <span class="entry-title-style"> Web Frameworks: </span>
+           <span class="skill-type-style"> Django, Rails, React, Flask</span>
+         </p>
+         <p>
+           <span class="entry-title-style"> Programming:</span>
+           <span class="skill-type-style"> TypeScript/Javascript, Python, C++/C, Ruby, MATLAB, Java </span>
+         </p>
+         <p>
+           <span class="entry-title-style"> Language:</span>
+           <span class="skill-type-style"> English, Korean, Japanese </span>
+         </p>
+         <p>
+           <span class="entry-title-style"> DevOp:</span>
+           <span class="skill-type-style"> Heroku, DigitalOcean, AWS, Google Cloud </span>
+         </p>
+       </div>
 
-        <h2 class="section-style"> Summary </h2>
-        <p class="paragraph-style"> Software Engineer with experience ranging from small companies to FANG, skilled in various frameworks and languages. Seeking interesting opportunities and contract work.</p>
-        <h2 class="section-style"> Skills </h2>
-        <div class="paragraph-style">
-          <p>
-            <span class="entry-title-style"> Web Frameworks: </span>
-            <span class="skill-type-style"> Django, Rails, React, Flask</span>
-          </p>
-          <p>
-            <span class="entry-title-style"> Programming:</span>
-            <span class="skill-type-style"> TypeScript/Javascript, Python, C++/C, Ruby, MATLAB, Java </span>
-          </p>
-          <p>
-            <span class="entry-title-style"> Language:</span>
-            <span class="skill-type-style"> English, Korean, Japanese </span>
-          </p>
-          <p>
-            <span class="entry-title-style"> DevOp:</span>
-            <span class="skill-type-style"> Heroku, DigitalOcean, AWS, Google Cloud </span>
-          </p>
-        </div>
-        <h2 class="section-style"> Experience </h2>
-        <!-- Experiences -->
-        <div class="flex-box">
-          <p class="entry-title-style">
-            <a href="https://www.meta.com/">Meta</a>
-          </p>
-          <p class="entry-location-style">San Francisco, CA, USA</p>
-        </div>
-        <div class="flex-box">
-          <p class="entry-position-style">SOFTWARE ENGINEER</p>
-          <p class="entry-date-style">Oct, 2024 - Present</p>
-        </div>
-        <p class="description-style">
-         · Just joined, writing react test framework to imporve engineers' productivity.
-        </p>
+       <!-- Experiences -->
+      <div class="sub-header">
+         <h2 class="section-style"> Experience </h2>
+         <div class="line"></div>
+       </div>
+       <div class="flex-box">
+         <p class="entry-title-style">
+           <a href="https://www.meta.com/">Meta</a>
+         </p>
+         <p class="entry-location-style">San Francisco, CA, USA</p>
+       </div>
+       <div class="flex-box">
+         <p class="entry-position-style">SOFTWARE ENGINEER</p>
+         <p class="entry-date-style">Oct, 2024 - Present</p>
+       </div>
+         <ul class="description-style">
+           <li>
+             Just joined, writing react test framework to imporve engineers' productivity.
+           </li>
+         </ul>
+       <div class="flex-box">
+         <p class="entry-title-style">
+           <a href="https://www.wmg.com/">Warner Music Group</a>
+         </p>
+         <p class="entry-location-style">Toronto, ON, Canada</p>
+       </div>
+       <div class="flex-box">
+         <p class="entry-position-style">TECHNICAL LEAD ENGINEER</p>
+         <p class="entry-date-style">July, 2023 - July, 2024</p>
+       </div>
+       <ul class="description-style">
+         <li>
+           Implements <a href="https://bazel.build/">bazel </a>structure for the company for TypeScript and JavaScript code base for hermiticity and stablishing standards for JavaScript and
+         </li>
+         <li>
+           TypeScript testing and code structures.
+         </li>
+         <li>
+           Led a team of five engineers in building GraphQL endpoints for client-facing applications using Apollo and AppSync, supporting over 60,000 concurrent users and auto scaling depending on request values.
+         </li>
+         <li>
+           Improved application response times by up to 85% for graphQL response by updating database schema and SQL queries, eliminating N+1 queries and lack of indexes.
+         </li>
+         <li>
+           Developed CI/CD pipelines for backend structures.
+         </li>
+         <li>
+           Designed infrastructure for pub/sub, caching, and media processing logic.
+         </li>
+       </ul>
 
-        <div class="flex-box">
-          <p class="entry-title-style">
-            <a href="https://www.wmg.com/">Warner Music Group</a>
-          </p>
-          <p class="entry-location-style">Toronto, ON, Canada</p>
-        </div>
-        <div class="flex-box">
-          <p class="entry-position-style">TECHNICAL LEAD ENGINEER</p>
-          <p class="entry-date-style">July, 2023 - July, 2024</p>
-        </div>
-        <p class="description-style">
-          · Implements <a href="https://bazel.build/">bazel </a>structure for the company for TypeScript and JavaScript code base for hermiticity and stablishing standards for JavaScript and<br>
-          TypeScript testing and code structures.<br>
-          · Led a team of five engineers in building GraphQL endpoints for client-facing applications using Apollo and AppSync, supporting over 60,000<br>
-          concurrent users and auto scaling depending on request values.<br>
-          · Improved application response times by up to 85% for graphQL response by updating database schema and SQL queries, eliminating N+1 queries<br>
-          and lack of indexes.<br>
-          · Developed CI/CD pipelines for backend structures.<br>
-          · Designed infrastructure for pub/sub, caching, and media processing logic.<br>
-        </p>
+       <div class="flex-box">
+         <p class="entry-title-style">
+           <a href="https://www.google.com/">Google</a>
+         </p>
+         <p class="entry-location-style">Toronto, ON, Canada</p>
+       </div>
+       <div class="flex-box">
+         <p class="entry-position-style">SOFTWARE ENGINEER</p>
+         <p class="entry-date-style">Feb, 2022 - July 2023</p>
+       </div>
+       <ul class="description-style">
+         <li>
+           Implements and maintained new features relating to App Script across google workspace platform including Gmail, sheets, and Docs.</li>
+         <li>
+           Improved a response time and render time of App Script hover card components.</li>
+         <li>
+           Collaborated with a team of developers to ensure timely and accurate delivery of features.</li>
+         <li>
+           Conducted user testing and gathered feedback to iterate on features for optimal user experience.</li>
+       </ul>
 
-        <div class="flex-box">
-          <p class="entry-title-style">
-            <a href="https://www.google.com/">Google</a>
-          </p>
-          <p class="entry-location-style">Toronto, ON, Canada</p>
-        </div>
-        <div class="flex-box">
-          <p class="entry-position-style">SOFTWARE ENGINEER</p>
-          <p class="entry-date-style">Feb, 2022 - July 2023</p>
-        </div>
-        <p class="description-style">
-          · Implements and maintained new features relating to App Script across google workspace platform including Gmail, sheets, and Docs.<br>
-          · Improved a response time and render time of App Script hover card components.<br>
-          · Collaborated with a team of developers to ensure timely and accurate delivery of features.<br>
-          · Conducted user testing and gathered feedback to iterate on features for optimal user experience.<br>
-        </p>
+       <div class="flex-box">
+         <p class="entry-title-style">
+           <a href="https://www.everlywell.com/">Everlywell</a>
+         </p>
+         <p class="entry-location-style">Toronto, ON, Canada</p>
+       </div>
+       <div class="flex-box">
+         <p class="entry-position-style">SOFTWARE ENGINEER</p>
+         <p class="entry-date-style">December, 2020 - Jan, 2022</p>
+       </div>
+       <ul class="description-style">
+         <li>
+           Maintained Amazon amplify apps to create and deploy React web applications for companies such as <a href="https://brooklynnets.everlywell.com/">NBA</a>, <a href="https://tinder.everlywell.com/">Tinder</a>, and other companies for COVID-19 at-home test kits.</li>
+         <li>
+           Implemented a script that helps accurately access and refund unused covid test kits; helping company save up to 200,000 USD.</li>
+         <li>
+           Created several Rails controllers for internal purposes; mocking end to end user experience for QA, mass refund features for CX department, and more, ultimately reducing support tickets amount by 50 percent.</li>
+         <li>
+           Implemented an audit table to help debug problems and logged which process was responsible for the change of the record using PaperTrail gems</li>
+       </ul>
 
-        <div class="flex-box">
-          <p class="entry-title-style">
-            <a href="https://www.everlywell.com/">Everlywell</a>
-          </p>
-          <p class="entry-location-style">Toronto, ON, Canada</p>
-        </div>
-        <div class="flex-box">
-          <p class="entry-position-style">SOFTWARE ENGINEER</p>
-          <p class="entry-date-style">December, 2020 - Jan, 2022</p>
-        </div>
-        <p class="description-style">
-          · Maintained Amazon amplify apps to create and deploy React web applications for companies such as <a href="https://brooklynnets.everlywell.com/">NBA</a>, <a href="https://tinder.everlywell.com/">Tinder</a>, and other companies for COVID-<br>
-          19 at-home test kits.<br>
-          · Implemented a script that helps accurately access and refund unused covid test kits; helping company save up to 200,000 USD.<br>
-          · Created several Rails controllers for internal purposes; mocking end to end user experience for QA, mass refund features for CX department, and<br>
-          more, ultimately reducing support tickets amount by 50 percent.<br>
-          · Implemented an audit table to help debug problems and logged which process was responsible for the change of the record using PaperTrail gems<br>
-        </p>
+       <div class="flex-box">
+         <p class="entry-title-style">
+           <a href="https://www.spiria.com/">Spiria</a>
+         </p>
+         <p class="entry-location-style">Oakville, ON, Canada</p>
+       </div>
+       <div class="flex-box">
+         <p class="entry-position-style">SOFTWARE ENGINEER</p>
+         <p class="entry-date-style">October, 2018 - October, 2020</p>
+       </div>
+       <ul class="description-style">
+         <li>
+           Constructed RESTful API endpoints in multiple different frameworks such as Django, Ruby on Rails, and Flask and automated API documentation process using swagger.
+         </li>
+         <li>
+           Designed custom rake tasks for importing production data into newly updated data structure to meet client's needs.
+         </li>
+         <li>
+           Maintained or updated staging/productions servers. Debugged problems in production postgres database using ssh and postgres console on Heroku or AWS servers
+         </li>
+         <li>
+           Collaborated in creating automation python scripts for websites and application using selenium covering for QA eliminating 80% of QA's manual work
+         </li>
+       </ul>
 
-        <div class="flex-box">
-          <p class="entry-title-style">
-            <a href="https://www.spiria.com/">Spiria</a>
-          </p>
-          <p class="entry-location-style">Oakvile, ON, Canada</p>
-        </div>
-        <div class="flex-box">
-          <p class="entry-position-style">SOFTWARE ENGINEER</p>
-          <p class="entry-date-style">October, 2018 - October, 2020</p>
-        </div>
-        <p class="description-style">
-          · Constructed RESTful API endpoints in multiple different frameworks such as Django, Ruby on Rails, and Flask and automated API documentation<br>
-          process using swagger.<br>
-          · Designed custom rake tasks for importing production data into newly updated data structure to meet client's needs.<br>
-          · Maintained or updated staging/productions servers. Debugged problems in production postgres database using ssh and postgres console on<br>
-          Heroku or AWS servers<br>
-          · Collaborated in creating automation python scripts for websites and application using selenium covering for QA eliminating 80% of QA's manual work<br>
-        </p>
+       <div class="flex-box">
+         <p class="entry-title-style">
+           <a href="https://www.apexscore.ai/">Apex Score</a>
+         </p>
+         <p class="entry-location-style">Oakville, ON, Canada</p>
+       </div>
+       <div class="flex-box">
+         <p class="entry-position-style">SOFTWARE ENGINEER (PART TIME)</p>
+         <p class="entry-date-style">September, 2019 - October, 2020</p>
+       </div>
+       <ul class="description-style">
+         <li>
+           Developed custom Shapley value regression model to calculate importance of independent variables of data sets using sklearn, pandas, and numpy.
+         </li>
+         <li>
+           Created custom image uploader to Amazon s3 bucket using boto3 library.
+         </li>
+         <li>
+           Built RESTful API application using Flask framework and automated extensive API documentation pages using flask-restplus, pytest, and swagger, covering 95% of the code base.
+         </li>
+         <li>
+           Created an interactive graph using D3.js in Vue.js with data from Flask backend API. 
+         </li>
+       </ul>
 
-        <div class="flex-box">
-          <p class="entry-title-style">
-            <a href="https://www.apexscore.ai/">Apex Score</a>
-          </p>
-          <p class="entry-location-style">Oakvile, ON, Canada</p>
-        </div>
-        <div class="flex-box">
-          <p class="entry-position-style">SOFTWARE ENGINEER (PART TIME)</p>
-          <p class="entry-date-style">September, 2019 - October, 2020</p>
-        </div>
-        <p class="description-style">
-          · Developed custom Shapley value regression model to calculate importance of independent variables of data sets using sklearn, pandas, and<br>
-          numpy.<br>
-          · Created custom image uploader to Amazon s3 bucket using boto3 library.<br>
-          · Built RESTful API application using Flask framework and automated extensive API documentation pages using flask-restplus, pytest, and swagger,<br>
-          covering 95% of the code base.<br>
-          · Created an interactive graph using D3.js in Vue.js with data from Flask backend API. 
-        </p>
-
-        <h2 class="section-style"> Education </h2>
-        <div class="flex-box">
-          <p class="entry-title-style">
-            University of British Columbia
-          </p>
-          <p class="entry-location-style">Kelowna, British Columbia</p>
-        </div>
-        <div class="flex-box">
-          <p class="entry-position-style">BACHELOR OF SCIENCE IN PHYSICS</p>
-          <p class="entry-date-style">2014 - 2018</p>
-        </div>
-      </main>
-      <Footer />
-   </body>
+      <div class="sub-header">
+         <h2 class="section-style"> Education </h2>
+         <div class="line"></div>
+       </div>
+       <div class="flex-box">
+         <p class="entry-title-style">
+           University of British Columbia
+         </p>
+         <p class="entry-location-style">Kelowna, British Columbia</p>
+       </div>
+       <div class="flex-box">
+         <p class="entry-position-style">BACHELOR OF SCIENCE IN PHYSICS</p>
+         <p class="entry-date-style">2014 - 2018</p>
+       </div>
+     </main>
+     <Footer />
+  </body>
 </html>
