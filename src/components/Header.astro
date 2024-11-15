@@ -28,17 +28,23 @@ import { SITE_TITLE } from '../consts';
 	</nav>
 </header>
 <style>
+    .internal-links {
+      width: 33%;
+    }
     .header-logo {
       display: flex;
       align-items: center;
     }
 	header {
-		margin: 0;
+		margin: auto;
 		padding: 0 1em;
         background: var(--white);
 		color: rgb(var(--black));
         font-family: "Atkinson", sans-serif;
-		box-shadow: 0 2px 8px rgba(var(--black), 5%);
+        box-shadow: 0 2px 8px rgba(var(--black), 5%);
+        width: 720px;
+        max-width: calc(100% - 2em);
+
 	}
 	h2 {
 		margin: 0;
@@ -65,7 +71,7 @@ import { SITE_TITLE } from '../consts';
 	}
 	.social-links,
 	.social-links a {
-		display: flex;
+      display: flex;
 	}
 	.social-links a {
 		text-decoration: none;
@@ -77,6 +83,9 @@ import { SITE_TITLE } from '../consts';
 		.social-links {
 			display: none;
 		}
+    .internal-links {
+      width: 45%;
+    }
 	}
     /* SVG logo */
     :global(.dark) img {

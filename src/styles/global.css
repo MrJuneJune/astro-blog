@@ -102,8 +102,8 @@ body {
   line-height: 1.7;
 }
 main {
-  width: 720px;
   background: var(--white);
+  width: 720px;
   max-width: calc(100% - 2em);
   margin: auto;
   padding: 1em 1em;
