@@ -11,11 +11,6 @@
   --red: #fb4485;
   --blue: #6ce0f1;
   --darktext: #414141;
-  --text: var(--darkgray);
-  --graytext: var(--gray);
-  --lighttext: var(--lightgray);
-  --awesome: #dc3522;
-
   /* from astro */
   --accent: #2337ff;
   --accent-dark: #000d8a;

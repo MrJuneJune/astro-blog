@@ -2,6 +2,7 @@
 import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SmallInfo from '../components/SmallInfo.astro';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 ---
 
@@ -10,6 +11,11 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   <style>
+    :root {
+      --text: var(--black);
+      --graytext: var(--gray);
+      --lighttext: var(--lightgray);
+    }
     .sub-header {
       display: flex;
       margin-top: 20px;
@@ -168,6 +174,7 @@ import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
   <body>
      <Header />
      <main>
+       <SmallInfo />
        <div class="info">
          <p><span class="header-firstname-style"> JUNTAE </span><span class="header-lastname-style">PARK</span><p>
          <p class="header-position-style"> FULL STACK DEVELOPER · SOFTWARE ENGINEER </p>
