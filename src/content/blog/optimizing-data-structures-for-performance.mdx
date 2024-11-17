@@ -1,0 +1,106 @@
+---
+title: 'Optimizing Data Structure for Performance'
+description: 'Learning about creating performance and data stuff lol'
+pubDate: 'Nov 16 2024'
+heroImage: '/data_struct_performant.webp'
+---
+optimizing-data-structures-for-performance
+
+### Optimizing Data Structures for Performance
+
+In my professional experience as a full-stack engineer, I primarily work with languages like Python, JavaScript, and Ruby, which don’t provide strict control over memory management. Contract work requiring languages like C or C++ is rare, as most clients prefer "modern" languages that prioritize ease of use over low-level control. Even on the few occasions when I did write C or C++ code, my focus was not on performance optimization. However, I recently observed some C++ code that changed my perspective.
+
+Let’s consider creating a simple entity for a video game:
+
+```c++
+struct Entity {
+  Vector3* position;
+  Vector3* velocity;
+  int* id;
+
+  Entity();
+  ~Entity();
+
+  void update();
+};
+```
+
+At first glance, this structure seems perfectly reasonable, especially if additional attributes are added later. However, if performance is a concern, this approach has significant drawbacks. While the pointers themselves are stored contiguously in memory, the data they point to may be dynamically allocated in disparate locations on the heap, leading to poor cache locality and slower performance.
+
+For example, in a 64-bit computer, the `Entity` struct might look like this in memory:
+
+```
+| position (8 bytes) | velocity (8 bytes) | id (8 bytes) |
+```
+
+However, the data the pointers reference could be scattered across the heap:
+
+- `position` might point to memory at `0x1000`.
+- `velocity` might point to memory at `0x2000`.
+- `id` might point to memory at `0x3000`.
+
+Since these memory addresses are not contiguous or guaranteed to be close, accessing them involves additional overhead. To address this, we can allocate a centralized memory block to improve performance and cache locality.
+
+Here’s an optimized version of the `Entity` struct:
+
+```c++
+struct Entity {
+  char* memory_block = nullptr;
+  Vector3* position = nullptr;
+  Vector3* velocity = nullptr;
+  int* id = nullptr;
+
+  Entity();
+  ~Entity();
+
+  void update();
+};
+```
+
+In this version, we allocate a single memory block for the entire `Entity` and assign pointers to the relevant sections within that block. Here’s an example of how this can be done:
+
+```c++
+Entity::Entity() {
+  memory_block = new char[sizeof(Vector3) * 2 + sizeof(int)];
+
+  position = new (memory_block) Vector3;
+  velocity = new (memory_block + sizeof(Vector3)) Vector3;
+  id = new (memory_block + sizeof(Vector3) * 2) int(10);
+}
+```
+
+Now, all attributes reside within a single, contiguous memory block. This improves cache locality and reduces the number of dynamic allocations, leading to better performance when constructing and accessing `Entity` objects.
+
+### Performance Comparison
+
+I ran some simple tests to compare the performance of the two approaches. The first test involved updating 5,000,000 entities. The results are as follows:
+
+```
+Updated Entities: 5,000,000
+
+Heap-Allocated Entity
+Time taken: 409.119 ms
+Memory Block Entity
+Time taken: 358.371 ms
+
+Second run (reversed):
+Memory Block Entity
+Time taken: 353.688 ms
+Heap-Allocated Entity
+Time taken: 423.250 ms
+```
+
+The second test measured the time taken to initialize and delete 100,000 entities:
+
+```
+Number of Entities: 100,000
+
+Heap-Allocated Entity
+Time taken: 554.954 ms
+Memory Block Entity
+Time taken: 481.258 ms
+```
+
+### Observations
+
+The results show a consistent ~20% performance improvement when using a centralized memory block. This difference is significant, especially in performance-critical applications like video games. In the future, I plan to share how I’ve applied similar optimization techniques to improve performance in JavaScript for network requests. These small changes can add up, making a big difference in real-world applications.
