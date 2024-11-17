@@ -1,0 +1,27 @@
+---
+title: 'My thoughts on IDE'
+description: 'My general thoughts on IDE and what I use'
+pubDate: 'Nov 17 2024'
+heroImage: '/ide_image.webp'
+---
+
+IDEs are crucial tools for developers. They are like a knife to a chef, a stethoscope to a doctor, or a pair of nice shoes to a basketball player. These tools significantly improve quality of life and directly impact how efficiently someone can work. That being said, they are not necessities. A chef can still cook with a dull knife, a doctor can diagnose with some degree of accuracy without a stethoscope, and LeBron will still dunk on you in office shoes. 
+
+<div class="center"> <img src="https://media.tenor.com/lquFMyMh8zYAAAAM/lebron-james-dunk.gif" /> </div>
+
+However, I’ve seen many engineers throughout my career who are unable to code effectively unless they have a specific setup—whether it’s VS Code, IntelliJ, or some other IDE. It’s disheartening to see people afraid to use a terminal just because it’s not “user-friendly.” Most of these modern Electron-based editors are simply wrapping terminal commands into clickable buttons. It’s bizarre to see engineers struggle with tasks like resolving merge conflicts unless they have buttons labeled 'Accept All,' 'Accept Incoming,' or 'Accept Local.' Some can’t even SSH into a remote server without the help of VS Code. 
+
+I fully support tools that help developers write better code and become better engineers. But if someone doesn’t understand what’s happening under the hood and asks questions like, “Why can’t I run Python in my VS Code?” or “What is PATH? I want to run python version 69”, then we’ve overcomplicated the process. This makes things harder for beginners and frustrating for those who already know what they’re doing. Losing context about what’s happening behind the scenes leads to a noticeable degradation in the quality of engineers, who can no longer perform simple tasks in the terminal.
+
+<div class="center"> <img src="/vscode.png" /> </div>
+
+*Why is VS Code taking up 1GB of RAM for opening a text file? The folder doesn't have 1GB worth of the files.*
+
+Productivity on some of these modern IDEs is also questionable. They are often slow. It can take a second or two to open a file, even after the folder is loaded. Many IDEs run countless linters, syntax checkers, and multiple LSP servers simultaneously, all because people install plugins for every library they use. These state-of-the-art applications, developed by billion-dollar companies, should leverage the power of a 4.15GHz CPU to feel like a sharp chef’s knife. Instead, they often feel like clunky infomercial gadgets that press a button to chop vegetables.
+
+<div class="center"> <img src="/vscode_slow.gif" /> </div>
+*It takes up 2~3 seconds to open a directory that has maybe 300 files. I don't even have any plugins.*
+
+Personally, I prefer using Neovim or vanilla Vim. Not because they are objectively better than VS Code (they also slow down sometimes), but because they don’t force me to deal with random dependency issues and unnecessary overhead. Many features, like peeking at definitions, work out of the box, and configuration is straightforward when needed.
+
+This is maybe just a rant, but if you’re starting out as an engineer, I recommend learning to use the terminal first. Then, try out various IDEs, starting from terminal base application, to see what they improve and what they make worse. Becoming proficient in your tools—whatever they may be—will help you code more effectively in an environment you’re comfortable with.
