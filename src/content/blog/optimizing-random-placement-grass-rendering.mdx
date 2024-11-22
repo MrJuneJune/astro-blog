@@ -1,6 +1,6 @@
 ---
-title: 'Optimizing Random Placement with Blue Noise for Realistic Grass Rendering'
-description: 'how to render natural grass with optimizations'
+title: 'Optimizing Random Placement with Colour Noise'
+description: 'Using different types of noises for realistic grass rendering'
 pubDate: 'Nov 21 2024'
 heroImage: '/planting-grass.webp'
 ---
@@ -104,7 +104,7 @@ As you can see from below image, this approach improves visual quality...
 While researching approaches, I came across Casey Muratori’s work on Witness, where he introduced a local sampling optimization. Instead of evaluating the entire grid for each point, checks are limited to a smaller region around the current point. This reduces redundant calculations, especially in dense scenes. Here’s my implementation:
 
 ```cpp
-void blueNoiseCircle(const int& sides, const float& inner_radius, const float& outer_radius,
+void blueNoiseCircle(Vector2& top_left_corner, Vector2& bottom_right_corner, const int& sides, const float& inner_radius, const float& outer_radius,
                Vector2& starting_point, Vector2 positions[], int& i){
   float center_x = starting_point.x;
   float center_y = starting_point.y;
@@ -146,10 +146,8 @@ void blueNoiseCircle(const int& sides, const float& inner_radius, const float& o
 
     attempts++;
   }
-
-  /* When we are out of the options within given circle so that it needs to find a empty spot randomly*/
   if (!added) {
-    blueNoiseRandom(sides, inner_radius, positions, i);
+    blueNoiseRandom(top_left_corner, bottom_right_corner, sides, inner_radius, positions, i);
   }
 }
 ```
