@@ -1,0 +1,172 @@
+---
+title: 'Optimizing Random Placement with Blue Noise for Realistic Grass Rendering'
+description: 'how to render natural grass with optimizations'
+pubDate: 'Nov 21 2024'
+heroImage: '/planting-grass.webp'
+---
+
+### Introduction
+
+When it comes to placing objects like grass in a scene, achieving a balance between randomness and natural-looking distribution is a challenge. Too much randomness, like white noise, results in unnatural clustering or gaps. On the other hand, a completely uniform pattern can look artificial. Nature strikes a balance, often governed by constraints such as nutrient availability or environmental factors.
+
+In this blog, I’ll walk you through how I tackled this problem by comparing white noise and blue noise for object placement. I’ll also explore an optimization technique inspired by Casey Muratori’s insights to improve performance, making it feasible for rendering grass in real-time applications.
+
+### Understanding White Noise vs. Blue Noise
+
+White noise is completely random: each point is placed without consideration of others. While this randomness is simple to implement, it results in visually chaotic patterns with undesirable clumping. 
+
+Blue noise introduces spatial constraints, ensuring a minimum distance between points. This results in a more natural, evenly spaced pattern—perfect for simulating real-world distributions like grass or tree placement.
+
+To visualize this difference, I implemented functions to generate both white and blue noise patterns and compared their results.
+
+---
+
+### Implementation Highlights
+
+#### White Noise
+
+The **whiteNoiseRandom** function generates points completely randomly within a bounding box:
+
+```cpp
+void whiteNoiseRandom(Vector2& top_left_corner, Vector2& bottom_right_corner, const int& sides, const float& inner_radius, Vector2 positions[], int& i) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<float> random_float(0, 1);
+
+  Vector2 start_point = { 
+    (random_float(gen) * (bottom_right_corner.x - top_left_corner.x)) + top_left_corner.x , 
+    (random_float(gen) * (bottom_right_corner.y - top_left_corner.y)) + top_left_corner.y
+  };
+  positions[i] = { start_point.x, start_point.y };
+}
+```
+
+This is computationally the most efficient as there is no constraints on where it can be placed which mean it will often lead to clumping together.
+
+<div class="center"> <img src="/white_noise_grass.png" /> </div>
+
+Above image is okay, but lacks realism. We can do better.
+
+---
+
+#### Blue Noise
+
+Blue noise requires additional checks to maintain a minimum distance between points, implemented as follows:
+
+```cpp
+void blueNoiseRandom(Vector2& top_left_corner, Vector2& bottom_right_corner, const int& sides, const float& inner_radius, Vector2 positions[], int& i) {
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<float> random_float(0, 1);
+
+  int attempts = 0;
+  const int max_attempts = sides * sides;
+
+  while (attempts < max_attempts) {
+    Vector2 start_point = { random_float(gen) * sides, random_float(gen) * sides };
+    if (x >= top_left_corner.x && x < bottom_right_corner.y && y >= top_left_corner.y && y < bottom_right_corner.y) {
+      bool added = true;
+      for (int j = 0; j < i; j++) {
+        float dx = x - positions[j].x;
+        float dy = y - positions[j].y;
+        if (std::sqrt(dx * dx + dy * dy) < inner_radius) {
+          added = false;
+          break;
+        }
+      }
+      if (added) {
+        positions[i] = { start_point.x, start_point.y };
+        break;
+      }
+    }
+    attempts++;
+  }
+}
+```
+
+As you can see from below image, this approach improves visual quality... 
+
+<div class="center"> <img src="/blue_noise_random.png" /> </div>
+
+...but at the cost of computational complexity. As the number of points increases, available space becomes limited, requiring more attempts to place a point. This can take several seconds, which isn’t ideal.
+
+<video width="100%" controls>
+  <source src="/slow_blue.mp4" type="video/mp4" />
+</video>
+
+** It takes around 8 seconds for 800 points in 1000 x 800 with 30 radius which means it should be able to add 100 more points in theory **
+
+---
+
+### Optimizing Blue Noise Generation
+
+
+While researching approaches, I came across Casey Muratori’s work on Witness, where he introduced a local sampling optimization. Instead of evaluating the entire grid for each point, checks are limited to a smaller region around the current point. This reduces redundant calculations, especially in dense scenes. Here’s my implementation:
+
+```cpp
+void blueNoiseCircle(const int& sides, const float& inner_radius, const float& outer_radius,
+               Vector2& starting_point, Vector2 positions[], int& i){
+  float center_x = starting_point.x;
+  float center_y = starting_point.y;
+
+  std::random_device rd;
+  std::mt19937 gen(rd());
+  std::uniform_real_distribution<float> angle_dist(0, 2 * M_PI);
+  std::uniform_real_distribution<float> radius_dist(0, 1);
+
+  bool added = false;
+  int attempts = 0;
+  const int max_attempts = outer_radius*outer_radius*PI - inner_radius*inner_radius*PI;
+
+  while (attempts <= max_attempts) {
+    float theta = angle_dist(gen);
+    float random_scale = radius_dist(gen);
+    float radius = std::sqrt(random_scale * (outer_radius * outer_radius -
+                                             inner_radius * inner_radius) +
+                             inner_radius * inner_radius);
+    float x = center_x + radius * std::cos(theta);
+    float y = center_y + radius * std::sin(theta);
+
+    added = true;
+    if (x > 0 && x < sides && y > 0 && y < sides) {
+      for (int j = 0; j < i; j++) {
+        Vector2 current_point = positions[j];
+        float dx = x - current_point.x;
+        float dy = y - current_point.y;
+        if (std::sqrt(dx * dx + dy * dy) < inner_radius) {
+          added = false;
+          break;
+        }
+      }
+      if (added) { 
+        positions[i] = { x, y };
+        break;
+      }
+    }
+
+    attempts++;
+  }
+
+  /* When we are out of the options within given circle so that it needs to find a empty spot randomly*/
+  if (!added) {
+    blueNoiseRandom(sides, inner_radius, positions, i);
+  }
+}
+```
+
+<video width="100%" controls>
+  <source src="/fast_blue.mp4" type="video/mp4" />
+</video>
+
+** It only took 2 seconds or so. It slows down at the end since it probably needed to look for one or two points using random number **
+
+
+<div class="center"> <img src="/blue_noises_optimal.png" /> </div>
+
+---
+
+### Conclusion
+
+If you're working on object placement for games, simulations, or any graphics project, understanding the balance between randomness and natural constraints is crucial. Blue noise offers a compelling way to achieve this balance, and with optimizations, it becomes practical for real-time rendering.
+
+You can find the full source code for my implementation on [GitHub](https://github.com/MrJuneJune/blog_sample_codes/tree/main/performance_tests/noises).
