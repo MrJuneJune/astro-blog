@@ -1,0 +1,250 @@
+---
+title: 'My thoughts on TDD'
+description: 'and how I believe TDD should be implemented'
+pubDate: 'Nov 23 2024'
+heroImage: '/cute_confused_shiba.webp'
+---
+
+Is testing important? Ask yourself that question. If you had to think about it for more than a few seconds, you’re either an inexperienced programmer or someone who has never had to release a product to a large group of users. Testing is not just important—it’s essential. It ensures that the software you release is less buggy and more stable because it allows you to catch issues before your customers do. That’s the "why" behind testing that everyone should agree. 
+
+The real debates arise around the *how*—specifically, approaches to testing, including methodologies like Test-Driven Development (TDD). Over my career, I’ve worked at multiple companies, all of which practiced TDD in some form. This often involved writing unit tests, integration tests, and end-to-end (e2e) tests. However, despite the commonality of TDD, every company seemed to implement it in its own convoluted way, making the code harder to write, debug, and maintain.
+
+## What Are Unit Tests?
+
+> "Unit testing is the process where you test the smallest functional unit of code. Software testing helps ensure code quality, and it's an integral part of software development. It's a software development best practice to write software as small, functional units then write a unit test for each code unit."
+> 
+> — Definition from AWS
+
+You might agree, disagree with above definition, or be unsure about what qualifies as a "unit." When I was just starting out, many programming semantics felt vague, contradictory, or overly complex. 
+
+### Example of true unit test
+
+During my first job at Spiria, one of my tasks was to write a serializer for a `GET` API in Django. Here's what such a serializer might look like:
+
+```python
+from rest_framework import serializers
+
+class FooSerializer(serializers.Serializer):
+    name = serializers.CharField(max_length=100)
+    unit_price = serializers.FloatField()
+    quantity_on_hand = serializers.IntegerField(default=0)
+
+    def create(self, validated_data):
+        return Foo.objects.create(**validated_data)
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.unit_price = validated_data.get('unit_price', instance.unit_price)
+        instance.quantity_on_hand = validated_data.get('quantity_on_hand', instance.quantity_on_hand)
+        instance.save()
+        return instance
+```
+
+If you’re unfamiliar with Django, the `create` and `update` methods save or update records in the database. It’s normal to serialize an object like this into a response for use in an API endpoint, often with a tool like `JSONRenderer().render(foo.data)`. 
+
+But what’s important here isn’t the specifics of the serializer. Instead, it’s the question: *How do you write a unit test for this?* 
+
+For a 21-year-old physics graduate with a 3-month self-taught coding experiences under their belt (and a serious League of Legends addiction), the answer wasn’t obvious. 
+
+---
+
+There are two main reasons why this serializer is hard to test as a true "unit":
+
+1. **Dependency on Framework Classes**  
+   The serializer inherits from Django REST Framework’s `Serializer` class, which comes with built-in behaviors for things like validation and field handling. If you test whether `name` exceeds 100 characters or if `unit_price` is a float, you’re essentially testing whether Django itself works, which is redundant. But you still test it because you are testing more for business logic rather than the code. i.e) This data should be able to serialize.
+
+2. **Database Dependency**  
+   The `create` and `update` methods interact with the database directly. Testing them requires either mocking the database (which introduces complexity).
+
+If you try to write a test that checks whether the `create` method works, you might end up mocking the `Foo` model, overriding its methods, and verifying that the mock functions were called with the correct arguments. While this might make sense for complex logic, it often feels like overkill for a simple serializer.
+
+Here’s an example of how you might write such a test:
+
+```python
+from unittest.mock import patch
+from rest_framework.exceptions import ValidationError
+
+CORRECT_DATA = {
+    'name': 'Test Item',
+    'unit_price': 10.99,
+    'quantity_on_hand': 5
+}
+BAD_DATA = {
+    'name': 'Test Item' * 100,
+    'unit_price': "yo",
+    'quantity_on_hand': 5
+}
+
+def test_serializer_create():
+    serializer = FooSerializer(data=CORRECT_DATA)
+
+    # This is where you are testing the frameworks....
+    assert serializer.is_valid()  
+
+    with patch('app.models.Foo.objects.create') as mock_create:
+        serializer.save()
+        mock_create.assert_called_once_with(
+            name='Test Item',
+            unit_price=10.99,
+            quantity_on_hand=5
+        )
+
+# And you need to create 3 more! (2 update using CORRECT_DATA, and BAD_DATA and 1 with create only)
+```
+
+This test ensures that the `create` method is called with the right data. But if the serializer logic gets more complex, the mocking can become cumbersome and annoying. Think about below case, where `FooSerializers` needs to have a redis singleton because it needs to store certain data inside of redis for faster accesibility for few minutes.
+
+```python
+class FooSerializer(serializers.Serializer):
+    ...
+    def create(self, validated_data):
+      self.bar(**validated_data, { ttl: 1000 })
+      ...
+
+    @cache_property
+    def bar(self):
+      return self.get_bar()
+
+    def get_bar(self):
+      return Bar()
+```
+
+In this case, the `get_bar` method is introduced to facilitate testing of the singleton behavior. This allows you to override the `get_bar` method during tests to avoid interacting with the actual Redis singleton. However, this adds another layer of complexity to your tests.
+
+```python
+def test_serializer_create():
+    serializer = FooSerializer(data=CORRECT_DATA)
+
+    assert serializer.is_valid()  
+
+    # Mocking the database interaction
+    with patch('app.models.Foo.objects.create') as mock_create:
+        # Mocking the singleton method
+        with patch.object(serializer, 'get_bar', return_value=MockBar()) as mock_bar:
+            serializer.save()
+            mock_bar.assert_called_once_with(
+                name='Test Item',
+                unit_price=10.99,
+                quantity_on_hand=5
+
+            ) 
+            mock_create.assert_called_once_with(
+                name='Test Item',
+                unit_price=10.99,
+                quantity_on_hand=5
+            )
+```
+
+You can imagine how the unit test would look as more cascading effects are introduced. With all these 76 lines of code (19 for each case, accounting for 4 tests: 2 with correct data values and 2 with incorrect data values), it essentially tests...
+
+1. Whether the `create`, `update`, and `Redis` functions are called.
+2. Whether the data has the correct units.
+
+<div class="center"> <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExbHpyY3A5ZjlzNzF5Nmp2Zm13M3kzZWU4Znl4djNmZWoxemRkaHVhbSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/5sNxGQsE3RXap07jQ4/giphy.webp" /> </div>
+
+---
+
+### Different Approach: Unit Testing in Rails
+
+In contrast, frameworks like Ruby on Rails handle testing differently. Instead of relying heavily on mocking, Rails encourages spinning up a test database. Here’s how the same serializer would look in Rails using Active Record:
+
+```ruby
+class Foo < ApplicationRecord
+  validates :name, presence: true, length: { maximum: 100 }
+  validates :unit_price, numericality: true
+end
+```
+
+And here’s how a test might look:
+
+```ruby
+require 'test_helper'
+
+class FooTest < ActiveSupport::TestCase
+  test "validates name length and prevents invalid record from saving" do
+    foo = Foo.new(name: "a" * 101, unit_price: 10.99, quantity_on_hand: 5)
+
+    assert_not foo.valid?, "Foo should be invalid when name exceeds 100 characters"
+    assert_equal ["is too long (maximum is 100 characters)"], foo.errors[:name]
+    assert_not foo.save, "Foo with an invalid name should not be saved to the database"
+    assert_nil Foo.find_by(name: "a" * 101), "No Foo record with an invalid name should exist in the database"
+  end
+
+  test "saves valid record to the database" do
+    foo = Foo.new(name: "Valid Item", unit_price: 10.99, quantity_on_hand: 5)
+
+    assert foo.valid?, "Foo should be valid with correct attributes"
+    assert foo.save, "Foo with valid attributes should be saved to the database"
+
+    # Look for saved foo and bar
+    saved_foo = Foo.find_by(name: "Valid Item")
+    saved_bar = Bar.find_by(name: "Valid Item")
+
+    assert_not_nil saved_foo, "Foo record should exist in the database"
+    assert_equal 10.99, saved_foo.unit_price, "Foo's unit_price should match the saved value"
+    assert_equal 5, saved_foo.quantity_on_hand, "Foo's quantity_on_hand should match the saved value"
+    assert_equal 10.99, saved_bar.unit_price, "Bar's unit_price should match the saved value"
+  end
+end
+```
+
+Here’s the revised version with improved grammar and flow:
+
+---
+
+In this example, you’re not mocking anything. Instead, you’re leveraging the test database to directly validate business logic. This approach often feels cleaner and less convoluted than mocking, especially for frameworks with tightly integrated ORM layers like Active Record. If your application also involves a Redis instance or similar components, you would create those as part of your test setup and verify their existence. This approach, however, goes strictly against AWS's definition of unit tests. At my previous job, I remember having a heated argument with an engineer over this—he was a strong believer in AWS's strict definition, while I preferred a looser interpretation based on my experience with Rails.
+
+**(And no, starting up a Docker container for a Redis instance or database is not SOOO slow that shouldn't be done. This is a widely accepted practice in many engineering companies, including Shopify and Airbnb.)**
+
+So, which approach is better? I don’t think there’s a definitive answer. Both have their merits and drawbacks. That said, I’d argue that Rails' approach is slightly better because you avoid the overhead of creating numerous mock objects. For example, in Jest or Python, mocking can get out of hand—especially if you need to mock React hooks that query or mutate global states instead of initializing the state directly within the test. It’s overwhelming to see ten different mock values inserted into a single object, and now imagine having to do that for every single function you write.
+
+## Integration Tests
+
+> "A type of software test that verifies how different components of your application and services interact and work together as a system, ensuring data flows correctly between them and that the overall functionality is as expected."  
+>  
+> — Definition from AWS
+
+We’ve essentially already done this in our Ruby on Rails testing, so let’s revisit our `FooSerializer`. Integration tests ensure that the serializer works as expected. Here's an example of such a test:
+
+```python
+def test_serializer_create():
+    serializer = FooSerializer(data=CORRECT_DATA)
+
+    assert serializer.is_valid()  
+    serializer.save()
+    assert Foo.objects.filter(name=CORRECT_DATA.name).exists()
+```
+
+At this point, we’re essentially rewriting the same tests but with less mocking. So, what’s the real value of this? There has to be a scenario where unit tests are useful, and integration tests aren’t—or vice versa. In this particular case, though, it’s hard to distinguish that line. As applications grow more complex, these distinctions may become clearer. However, for most scenarios like this one, if tests weren’t written at all, it would be difficult to identify what’s missing or redundant.
+
+In this specific case, many would agree that writing tests like this offers little value. It’s almost redundant and doesn’t justify the time and effort required.
+
+## E2E Tests
+
+I couldn't find a definition so I am going to just ask gemini for it.
+
+> End-to-end (E2E) testing is a software testing method that verifies how a software product works from start to finish. It's also known as system testing or broad stack testing
+>
+> — Gemini version that doesn't create controversial images.
+
+Finally, let’s talk about end-to-end (E2E) tests. The serializer function we wrote will likely live inside some API endpoint, and I don’t feel like writing codes for it so I hope you guys can imagine it. In most cases, E2E tests are run through a virtual machine (VM) or Docker container that replicates a smaller version of the real server and database, seeded with factory data. These environments are spun up during CI/CD pipelines, where tests simulate real server requests. 
+
+E2E testing is extremely useful when your server is self-contained. However, if your application relies on third-party services, things can get tricky. For example, let’s consider a case where your application depends on an AWS service to check content safety. You can’t easily mimic that service locally, so you’d need to test against their live servers, which may incur costs for every request. As a result, you’ll likely want to separate those tests from your main CI/CD pipeline and use a dedicated staging environment to avoid mixing with production accounts. 
+
+That’s a *good* case. A *bad* case is when the third-party service doesn’t allow any testing at all. For instance, Google’s SSO or similar services might block testing to prevent potential DDoS attacks (Because it is a DDoS attack). In these scenarios, your E2E tests often become glorified integration tests, where you simulate the service instead of interacting with the real thing.
+
+In short, TDD in its purest sense—using unit, integration, and E2E tests together—is often impractical or unachievable. I haven’t even touched on the time required to run E2E tests, the context-switching needed to write or debug them, flakiness, and other challenges. Still, we write tests because they are critical to delivering reliable software. After all, we’re not open-source engineers releasing products that randomly break because of dependencies like `is_number` in npm, right? Right?
+
+---
+
+## My Thoughts
+
+We should primarily focus on integration and E2E tests that validate real user activity. It’s not always necessary to test the entire flow, especially when certain parts—like SSO—can only be mocked and not tested fully. E2E tests are often slow, flaky (the worst!), and sometimes impossible to implement comprehensively. 
+
+Unit tests should be reserved for complex functions that require isolation. My general approach to testing is like a binary search: 
+
+- If a unit test fails, the problem is always within the business logic of that specific function.  
+- If an integration test fails, the issue is likely due to mismatched input/output between components.  
+- If an E2E test fails, it could indicate a third-party service outage, a race condition, or a broader system issue.  
+
+For simple components like our `FooSerializer`, writing three separate tests (unit, integration, and E2E) is overkill at best and a waste of time at worst. Instead, focus on testing critical user flows and isolating tests to specific areas when necessary. This strikes a balance between test coverage and productivity, avoiding the trap of excessive and redundant testing.
