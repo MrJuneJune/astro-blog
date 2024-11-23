@@ -5,21 +5,19 @@ pubDate: 'Nov 23 2024'
 heroImage: '/cute_confused_shiba.webp'
 ---
 
-Is testing important? Ask yourself that question. If you had to think about it for more than a few seconds, you’re either an inexperienced programmer or someone who has never had to release a product to a large group of users. Testing is not just important—it’s essential. It ensures that the software you release is less buggy and more stable because it allows you to catch issues before your customers do. That’s the "why" behind testing that everyone should agree. 
+Is testing important? Ask yourself that question. If you had to think about it for more than a few seconds, you’re either an inexperienced programmer or someone who has never had to release a product to a large group of users. Testing is not just important—it’s essential. It ensures that the software you release is less buggy and more stable because it allows you to catch issues before your customers do. That’s the "why" behind testing that everyone would agree to.
 
-The real debates arise around the *how*—specifically, approaches to testing, including methodologies like Test-Driven Development (TDD). Over my career, I’ve worked at multiple companies, all of which practiced TDD in some form. This often involved writing unit tests, integration tests, and end-to-end (e2e) tests. However, despite the commonality of TDD, every company seemed to implement it in its own convoluted way, making the code harder to write, debug, and maintain.
+The real debates arise around the *how*—specifically, approaches to testing, including methodologies like Test-Driven Development (TDD). Over my career, I’ve worked at multiple companies, all of which practiced TDD in some form. This often involved writing unit tests, integration tests, and end-to-end (e2e) tests. However, despite the commonality of TDD, every company seemed to implement it in its own convoluted way, making the code harder to write, debug, and maintain. I want to talk about this practice and my problem with it.
 
-## What Are Unit Tests?
+## Unit Tests
 
 > "Unit testing is the process where you test the smallest functional unit of code. Software testing helps ensure code quality, and it's an integral part of software development. It's a software development best practice to write software as small, functional units then write a unit test for each code unit."
 > 
 > — Definition from AWS
 
-You might agree, disagree with above definition, or be unsure about what qualifies as a "unit." When I was just starting out, many programming semantics felt vague, contradictory, or overly complex. 
+You might agree with the above definition, disagree, or be unsure about what qualifies as a "unit," but most people are likely to agree with it overall. Now, imagine you’re a 21-year-old physics graduate with three months of self-taught coding experience (and a serious League of Legends addiction). Somehow, you land your first job as a software engineer and are tasked with writing a serializer for a `GET` API in Django—and... you guessed it! testing it!
 
-### Example of true unit test
-
-During my first job at Spiria, one of my tasks was to write a serializer for a `GET` API in Django. Here's what such a serializer might look like:
+Here's what such a serializer might look like:
 
 ```python
 from rest_framework import serializers
@@ -42,23 +40,19 @@ class FooSerializer(serializers.Serializer):
 
 If you’re unfamiliar with Django, the `create` and `update` methods save or update records in the database. It’s normal to serialize an object like this into a response for use in an API endpoint, often with a tool like `JSONRenderer().render(foo.data)`. 
 
-But what’s important here isn’t the specifics of the serializer. Instead, it’s the question: *How do you write a unit test for this?* 
-
-For a 21-year-old physics graduate with a 3-month self-taught coding experiences under their belt (and a serious League of Legends addiction), the answer wasn’t obvious. 
+Now, we understand detailed implementation as much as senior INSERT_LIBRARY engineer, the question is: *How do you write a unit test for this?* 
 
 ---
 
 There are two main reasons why this serializer is hard to test as a true "unit":
 
 1. **Dependency on Framework Classes**  
-   The serializer inherits from Django REST Framework’s `Serializer` class, which comes with built-in behaviors for things like validation and field handling. If you test whether `name` exceeds 100 characters or if `unit_price` is a float, you’re essentially testing whether Django itself works, which is redundant. But you still test it because you are testing more for business logic rather than the code. i.e) This data should be able to serialize.
+   The serializer inherits from Django REST Framework’s `Serializer` class, which comes with built-in behaviors for things like validation and field handling. If you test whether `name` exceeds 100 characters or if `unit_price` is a float, you’re essentially testing whether Django itself works, which is redundant. But you still need to create a test given a *correct* vallue and *incorrect* value because you are testing more for business logic rather than the code. So are we creating unit test for the function ? or the library?
 
 2. **Database Dependency**  
-   The `create` and `update` methods interact with the database directly. Testing them requires either mocking the database (which introduces complexity).
+   The `create` and `update` methods interact with the database directly. Testing them requires either mocking the database (which introduces complexity).  If you try to write a test that checks whether the `create` method works, you might end up mocking the `Foo` model, overriding its methods, and verifying that the mock functions were called with the correct arguments. While this might make sense for complex logic, it often feels like overkill for a simple serializer.
 
-If you try to write a test that checks whether the `create` method works, you might end up mocking the `Foo` model, overriding its methods, and verifying that the mock functions were called with the correct arguments. While this might make sense for complex logic, it often feels like overkill for a simple serializer.
-
-Here’s an example of how you might write such a test:
+Here’s an example of how you might write such a *unit* test:
 
 ```python
 from unittest.mock import patch
@@ -146,7 +140,7 @@ You can imagine how the unit test would look as more cascading effects are intro
 
 ### Different Approach: Unit Testing in Rails
 
-In contrast, frameworks like Ruby on Rails handle testing differently. Instead of relying heavily on mocking, Rails encourages spinning up a test database. Here’s how the same serializer would look in Rails using Active Record:
+In frameworks like Ruby on Rails, a different paradigm is used for handling tests, one that might directly conflict with the traditional definition of unit tests. Instead of relying heavily on mocking and isolating functions, frameworks like Rails encourage spinning up a test database or any external dependencies that are *essential*. Here’s how the same serializer would look in Rails using Active Record:
 
 ```ruby
 class Foo < ApplicationRecord
@@ -188,15 +182,11 @@ class FooTest < ActiveSupport::TestCase
 end
 ```
 
-Here’s the revised version with improved grammar and flow:
-
----
-
 In this example, you’re not mocking anything. Instead, you’re leveraging the test database to directly validate business logic. This approach often feels cleaner and less convoluted than mocking, especially for frameworks with tightly integrated ORM layers like Active Record. If your application also involves a Redis instance or similar components, you would create those as part of your test setup and verify their existence. This approach, however, goes strictly against AWS's definition of unit tests. At my previous job, I remember having a heated argument with an engineer over this—he was a strong believer in AWS's strict definition, while I preferred a looser interpretation based on my experience with Rails.
 
 **(And no, starting up a Docker container for a Redis instance or database is not SOOO slow that shouldn't be done. This is a widely accepted practice in many engineering companies, including Shopify and Airbnb.)**
 
-So, which approach is better? I don’t think there’s a definitive answer. Both have their merits and drawbacks. That said, I’d argue that Rails' approach is slightly better because you avoid the overhead of creating numerous mock objects. For example, in Jest or Python, mocking can get out of hand—especially if you need to mock React hooks that query or mutate global states instead of initializing the state directly within the test. It’s overwhelming to see ten different mock values inserted into a single object, and now imagine having to do that for every single function you write.
+If you ask me, I’d argue that Rails' approach is slightly better because you avoid the overhead of creating numerous mock objects. For example, in Jest or Python, mocking can get out of hand—especially if you need to mock React hooks that query or mutate global states instead of initializing the state directly within the test. It’s overwhelming to see ten different mock values inserted into a single object, and now imagine having to do that for every single function you write. But now, we will have conflict with...
 
 ## Integration Tests
 
@@ -217,7 +207,7 @@ def test_serializer_create():
 
 At this point, we’re essentially rewriting the same tests but with less mocking. So, what’s the real value of this? There has to be a scenario where unit tests are useful, and integration tests aren’t—or vice versa. In this particular case, though, it’s hard to distinguish that line. As applications grow more complex, these distinctions may become clearer. However, for most scenarios like this one, if tests weren’t written at all, it would be difficult to identify what’s missing or redundant.
 
-In this specific case, many would agree that writing tests like this offers little value. It’s almost redundant and doesn’t justify the time and effort required.
+In this specific case, many would agree that writing both unit tests and integration tests offers little value. It’s almost redundant and doesn’t justify the time and effort required.
 
 ## E2E Tests
 
