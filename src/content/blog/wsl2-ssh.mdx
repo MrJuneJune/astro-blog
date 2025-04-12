@@ -1,0 +1,145 @@
+---
+title: 'WSL2 Cloudtop Setup'
+description: 'How to setup Cloudtop experience using wsl2.'
+pubDate: 'April 12 2025'
+heroImage: '/dog-ssh.png'
+---
+
+Sorry for going MIA. I hadn’t had any programming-related ideas worth sharing lately, and nothing I wrote in my free time felt ready. But recently, something sparked my interest.
+
+If you’ve worked at a FAANG company, chances are you’ve used *cloudtop*—essentially SSH’ing into a remote dev server because your laptop can’t realistically run a local version of Facebook or Gmail. Personally, I’ve grown to like the workflow. It gives me a consistent development environment no matter where I go, and it’s fast enough that I don’t run into many issues while coding.
+
+Also, I should probably use that $2K computer I bought... which has mostly been collecting dust.
+
+## What am I trying to achieve?
+
+I have a domain lying around from a startup idea where I planned to post free educational content and maybe get some coffee money out of it—because, yeah, I’m broke. Like most of my ideas, I never got around to finishing it. But now, I’m putting it to use for this setup.
+
+Here’s the plan:
+
+1. Point a DNS record to my public IP address.
+2. Forward traffic from my router (public IP) to my Windows machine (internal IP).
+3. Use Windows `netsh` to proxy ports from Windows to my WSL2 instance.
+4. Set up an SSH server inside WSL2 (I'm using Debian).
+
+You might wonder why I’m using WSL2 instead of just working directly from Windows. It’s simple: I’m a creature of habit. I can’t get used to PowerShell or all the Windows-specific shortcuts. My WSL2 instance runs Debian, but this tutorial should work on most Linux distros with minor adjustments.
+
+The list above flows from DNS all the way to the WSL2 SSH server. Let’s now go step-by-step and verify each part.
+
+## Setting up SSH in WSL2
+
+We’ll use `openssh-server`. Yes, you could write your own SSH server, but let’s not kid ourselves—just use something battle-tested.
+
+```bash
+sudo apt update
+sudo apt install openssh-server
+```
+
+If you’re not using Debian, substitute with your distro’s package manager.
+
+Now check if the SSH service is running:
+
+```bash
+sudo systemctl status ssh
+```
+
+If it's not running:
+
+```bash
+sudo systemctl start ssh
+```
+
+To start SSH automatically on boot:
+
+```bash
+sudo systemctl enable ssh
+```
+
+Now SSH is running on your WSL2 instance. But you can’t access it from outside without configuring Windows to forward traffic to WSL2.
+
+**warning**: You should be careful when you are setting up SSH. Try to use PublicKeyAuthentication over password as you will get many robot visitor trying to login as a root ^_^
+
+## Setting up Portproxy on Windows
+
+I am picking port number 2222 on my window machine, but you can pick whatever port number that is avaialble. To have your Windows host forward to port 22(default SSH port number) on your WSL2 instance (replace the IP with your actual WSL2 IP):
+
+If you don't know your WSL2 IP address, you can easily see this by using ipconfig in powershell.
+
+```powershell
+netsh interface portproxy add v4tov4 listenport=2222 listenaddress=0.0.0.0 connectport=22 connectaddress=<WSL2-IP>
+```
+
+To view current portproxy rules:
+
+```powershell
+netsh interface portproxy show all
+```
+
+If you need to remove it (only do this if you know that port is not being used)
+
+```powershell
+netsh interface portproxy delete v4tov4 listenport=2222 listenaddress=0.0.0.0
+```
+
+You should now be able to SSH into your WSL2 instance from your Windows machine:
+
+```bash
+ssh -p 2222 <your-wsl-username>@localhost
+```
+
+Or from another device on the same network:
+
+```bash
+ssh -p 2222 <your-wsl-username>@<Windows-internal-IP>
+```
+
+## Setting Up Port Forwarding on Your Router
+
+To make it publicly accessible, forward port 2222 on your router to the internal IP of your Windows machine.
+
+If you're using Xfinity, you can do this from the Xfinity app. Otherwise, you can often log into your router at `http://10.0.0.1` or `http://192.168.0.1`. Default credentials are often:
+
+- **Username**: `admin`  
+- **Password**: `password` (varies by model/provider, so check your router label or ISP’s documentation)
+
+## Pointing a Domain to Your Public IP
+
+Once your SSH server is reachable via your public IP, buy a domain from Namecheap or another registrar and set up an A record pointing to that IP.
+
+However, most residential IPs are dynamic, so they can change. To deal with this, use a dynamic DNS (DDNS) solution.
+
+I use **Cloudflare** with a small PowerShell script that updates the A record periodically:
+
+```powershell
+$zoneId = "<your-zone-id>"
+$recordId = "<your-record-id>"
+$apiToken = "<your-api-token>"
+$recordName = "<your-domain>"
+$currentIP = Invoke-RestMethod -Uri "https://api.ipify.org"
+
+$headers = @{
+    "Authorization" = "Bearer $apiToken"
+    "Content-Type"  = "application/json"
+}
+
+$body = @{
+    type    = "A"
+    name    = $recordName
+    content = $currentIP
+    ttl     = 120
+    proxied = $false
+} | ConvertTo-Json
+
+Invoke-RestMethod -Method PUT `
+  -Uri "https://api.cloudflare.com/client/v4/zones/$zoneId/dns_records/$recordId" `
+  -Headers $headers `
+  -Body $body
+```
+
+You can schedule this with Windows Task Scheduler to run every 10–15 minutes.
+
+## That’s It
+
+TADA! You now have your own *Cloudtop* setup—using your personal machine. It only costs electricity (which might be more than a free AWS tier, lol), but it’s yours.
+
+In the next post, I’ll show you how to use the exact same steps to host a full-featured server, including self-hosting your own GitHub-like instance.
