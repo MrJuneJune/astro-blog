@@ -299,7 +299,7 @@
         let isPracticeMode = false;
 
         // Questions and answers data
-        const questionResponse = await fetch('./questions.json');
+        const questionResponse = await fetch('/questions.json');
         questionsData = (await questionResponse.json()).response;
 
         // DOM elements

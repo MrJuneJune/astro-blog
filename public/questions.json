@@ -1,0 +1,484 @@
+{
+  "response": [
+    {
+        "question": "When driving in fog, you should:",
+        "options": [
+            "Use high-beam headlights.",
+            "Use low-beam headlights.",
+            "Drive with only parking lights on.",
+            "Use emergency flashers only."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "At a red traffic light, you may turn right:",
+        "options": [
+            "After you come to a complete stop and it is safe to do so.",
+            "Without stopping if there is no oncoming traffic.",
+            "Only if a sign permits you to do so.",
+            "Only after letting one car go ahead of you."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "When can you legally block an intersection?",
+        "options": [
+            "During rush hour traffic.",
+            "Never.",
+            "Only when you are turning left.",
+            "If you entered on a green light."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "If your vehicle starts to hydroplane, you should:",
+        "options": [
+            "Accelerate to regain traction.",
+            "Slam on your brakes immediately.",
+            "Take your foot off the accelerator.",
+            "Turn your steering wheel sharply."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "California's \"Basic Speed Law\" says:",
+        "options": [
+            "You should always drive at the posted speed limit.",
+            "You must never drive faster than is safe for current conditions.",
+            "The maximum speed limit in California is 65 mph.",
+            "You can drive 10 mph over the speed limit to keep up with traffic."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "At a four-way stop, who has the right of way?",
+        "options": [
+            "The driver on the left.",
+            "The driver who arrives last.",
+            "The driver who arrives first.",
+            "The driver who signals first."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "If you are involved in a collision, you must exchange with the other person involved:",
+        "options": [
+            "Proof of insurance only.",
+            "Driver's license, vehicle registration, proof of insurance, and current address.",
+            "Driver's license and phone number only.",
+            "Vehicle registration only."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "A pedestrian with a white cane is:",
+        "options": [
+            "A senior citizen who must yield to vehicles.",
+            "A person who is visually impaired.",
+            "A person with a hearing disability.",
+            "A street vendor selling goods."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "Two sets of solid double yellow lines spaced two or more feet apart:",
+        "options": [
+            "May be crossed to enter or exit a driveway.",
+            "Should be treated like a solid wall and not be crossed.",
+            "Indicate a center left turn lane.",
+            "Indicate an HOV lane."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "When parking uphill on a two-way street with no curb, your front wheels should be:",
+        "options": [
+            "Turned to the left (toward the center of the road).",
+            "Turned to the right (away from the road).",
+            "Parallel with the pavement.",
+            "It does not matter which way the wheels are pointed."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "If you plan to pass another vehicle, you should:",
+        "options": [
+            "Assume they will let you over.",
+            "Signal and pass when safe.",
+            "Drive closely behind the car in front of you until you can pass.",
+            "Flash your headlights to make the other driver slow down."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "California law states that you must signal:",
+        "options": [
+            "For at least 50 feet before turning.",
+            "Only when other cars are around.",
+            "For at least 100 feet before turning or changing lanes.",
+            "Only if you are turning right."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "A green arrow at a traffic light means:",
+        "options": [
+            "Go straight only.",
+            "You may proceed in the direction of the arrow if it is safe.",
+            "Yield to pedestrians only.",
+            "Stop, then proceed."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "You are driving on a multi-lane freeway. The lane in the center is:",
+        "options": [
+            "The \"fast\" lane.",
+            "The lane for slow-moving vehicles.",
+            "The lane used for passing.",
+            "The lane for smooth driving and through traffic."
+        ],
+        "answer": "D"
+    },
+    {
+        "question": "In California, you must use your headlights:",
+        "options": [
+            "One hour before sunset.",
+            "If you cannot see at least 1,000 feet ahead.",
+            "30 minutes after sunset to 30 minutes before sunrise.",
+            "Only when it's raining heavily."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "When approaching a school zone with flashing yellow lights, you must:",
+        "options": [
+            "Maintain your speed.",
+            "Stop immediately.",
+            "Slow down to the posted school zone speed limit.",
+            "Honk to alert children."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "You should increase your following distance when:",
+        "options": [
+            "The roads are dry and clear.",
+            "Driving behind a large vehicle that blocks your view.",
+            "Traffic is light.",
+            "You are in the far left lane."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "When a traffic signal is not working at an intersection, you should:",
+        "options": [
+            "Treat the intersection as if it is a four-way stop.",
+            "Proceed as if the light was green.",
+            "Look for a police officer for instructions.",
+            "Make a U-turn and avoid the intersection."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "It is illegal for a person 21 years of age or older to drive with a blood alcohol concentration (BAC) of _______ or higher.",
+        "options": [
+            "0.02%",
+            "0.06%",
+            "0.08%",
+            "0.10%"
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "If you are under 21 years old, your BAC must be:",
+        "options": [
+            "0.00%.",
+            "0.01% or higher.",
+            "0.05% to pass the driving test.",
+            "No law applies to drivers under 21."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "A solid yellow line next to a broken yellow line means:",
+        "options": [
+            "Passing is allowed in both directions.",
+            "Passing is not allowed in either direction.",
+            "Passing is allowed only on the side with the broken line.",
+            "You can cross to turn left only."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "When entering a freeway on an on-ramp, you should:",
+        "options": [
+            "Slow down to 25 mph, then merge.",
+            "Stop on the ramp if there is no space to merge immediately.",
+            "Accelerate to match the speed of traffic.",
+            "Drive onto the freeway and then speed up."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "You may cross a solid double yellow line:",
+        "options": [
+            "To pass another vehicle.",
+            "To turn left into a private driveway.",
+            "Under no circumstances.",
+            "To make a U-turn in a business district."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "A child under 2 years old must:",
+        "options": [
+            "Always be secured in a rear-facing child passenger restraint system unless the child weighs 40 or more pounds or is 40 or more inches tall.",
+            "Sit in the front seat to see the road.",
+            "Use only the regular seat belt.",
+            "Be secured in a booster seat only."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "When can you drive in a bike lane?",
+        "options": [
+            "Never.",
+            "During rush hour.",
+            "To make a right turn within 200 feet of the intersection.",
+            "If the bike lane is empty."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "When approaching an emergency vehicle that is stopped with its lights flashing, California's \"Move Over\" law requires:",
+        "options": [
+            "Speeding up to pass the emergency vehicle.",
+            "Driving in the far right lane as quickly as possible.",
+            "Moving over one lane or slowing down if unable to change lanes safely.",
+            "Honking to warn other drivers."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "You arrive at an intersection with a green light. A pedestrian is in the crosswalk but crossing against the red signal. You should:",
+        "options": [
+            "Continue through because you have the green light.",
+            "Honk to make them move faster.",
+            "Stop and allow the pedestrian to finish crossing.",
+            "Drive around the pedestrian."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "Large trucks turning right onto a street with two lanes in each direction:",
+        "options": [
+            "Must stay in the right lane at all times.",
+            "May need to swing wide to complete the turn.",
+            "Are usually able to turn without crossing into the left lane.",
+            "Can complete a turn faster than smaller vehicles."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "When should you use your horn?",
+        "options": [
+            "To alert other drivers of danger.",
+            "To express anger at slow drivers.",
+            "Whenever you want to get someone's attention for personal reasons.",
+            "In heavy traffic to get cars to move faster."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "If there is an oncoming car to your left and a bicyclist to your right, what is the best course of action?",
+        "options": [
+            "Drive closer to the bicyclist to avoid the oncoming car.",
+            "Split the difference and drive exactly in the middle.",
+            "Slow down and let the oncoming vehicle pass, then move to the left to allow more space for the bicyclist.",
+            "Honk to make the bicyclist move off the road."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "On a two-lane road where passing is unsafe, you drive behind a slow-moving vehicle. You should:",
+        "options": [
+            "Follow closely and try to pass in the same lane.",
+            "Stay behind until you can safely pass.",
+            "Pass on the shoulder.",
+            "Honk until they move out of your way."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "When driving at night, you should:",
+        "options": [
+            "Increase your following distance.",
+            "Use your phone light to see the speedometer.",
+            "Use only your parking lights in residential areas.",
+            "Drive with your interior lights on."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "If your car has airbags, you should:",
+        "options": [
+            "Sit as close to the steering wheel as possible.",
+            "Place your hands behind the airbag panel.",
+            "Move your seat so you are at least 10 inches from the airbag cover.",
+            "Deactivate them unless driving on the freeway."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "If your accelerator suddenly gets stuck and you cannot free it, you should:",
+        "options": [
+            "Turn off the engine immediately, even if you are moving.",
+            "Shift to neutral, brake, and pull off the road.",
+            "Pump the gas pedal quickly.",
+            "Continue driving until you find a service station."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "You are driving on the freeway behind a large truck. You should:",
+        "options": [
+            "Stay in the truck's blind spot.",
+            "Allow extra distance behind the truck.",
+            "Drive close behind the truck to draft and save fuel.",
+            "Assume the truck driver can see you."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "The speed limit in a residential area is _____ unless otherwise posted.",
+        "options": [
+            "15 mph",
+            "25 mph",
+            "35 mph",
+            "45 mph"
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "When you see a yellow flashing traffic signal at an intersection, you should:",
+        "options": [
+            "Stop completely before entering the intersection.",
+            "Treat it like a stop sign.",
+            "Slow down and cross the intersection carefully.",
+            "Quickly drive through before it turns red."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "To turn left from a two-way street onto a one-way street, you should:",
+        "options": [
+            "Begin the turn with your left wheel as close as possible to the yellow dividing line.",
+            "Start the turn in the right lane, then move to the left lane.",
+            "Turn from any lane.",
+            "Turn sharply and cut across the travel lanes."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "U-turns in business districts are:",
+        "options": [
+            "Legal at all times.",
+            "Illegal unless a sign permits them.",
+            "Allowed only when there is no traffic around.",
+            "Allowed in front of fire stations."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "You must file a Report of Traffic Accident Occurring in California (SR 1) with the DMV within 10 days when:",
+        "options": [
+            "Your vehicle fails a smog test.",
+            "You have an accident and there is an injury or death.",
+            "You move to a new address.",
+            "You sell your vehicle."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "When parking downhill on a two-way street with a curb, you should:",
+        "options": [
+            "Turn your front wheels toward the curb.",
+            "Turn your front wheels away from the curb.",
+            "Leave your wheels straight.",
+            "Place the gear in neutral only."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "You are about to exit the freeway. When should you signal?",
+        "options": [
+            "About 5 seconds before exiting.",
+            "About 2 seconds before exiting.",
+            "Don't signal if there's no traffic behind you.",
+            "Signal only if the exit is sharp."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "You see a school bus ahead of you with flashing red lights. What must you do?",
+        "options": [
+            "Stop as long as the red lights are flashing.",
+            "Drive slowly past the bus.",
+            "Honk to let the driver know you are passing.",
+            "Pass immediately before children exit."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "The seat belt law in California states:",
+        "options": [
+            "Only the driver needs to wear a seat belt.",
+            "Only passengers in the front seat need to wear seat belts.",
+            "All occupants of a moving vehicle must wear seat belts.",
+            "Seat belts are optional for adults."
+        ],
+        "answer": "C"
+    },
+    {
+        "question": "If a driver is distracted, for example, by using a cell phone or eating, they are:",
+        "options": [
+            "Less likely to have an accident.",
+            "More likely to miss critical objects on the road.",
+            "Driving safely if they can multitask.",
+            "Obeying the \"hands-free\" law correctly."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "If a pedestrian is at a corner or crosswalk with no traffic lights, you should:",
+        "options": [
+            "Yield to the pedestrian, as they have the right of way.",
+            "Go first if you are faster.",
+            "Drive around them if there is room.",
+            "Move over to the bike lane to go around them."
+        ],
+        "answer": "A"
+    },
+    {
+        "question": "When approaching a roundabout, you should:",
+        "options": [
+            "Stop immediately before entering.",
+            "Yield to traffic already in the roundabout.",
+            "Always enter in the left lane.",
+            "Pass large trucks in the roundabout."
+        ],
+        "answer": "B"
+    },
+    {
+        "question": "When you change lanes or merge with traffic, you:",
+        "options": [
+            "Should first check mirrors, then check your blind spot.",
+            "Only need to check your mirrors.",
+            "Honk to alert other drivers.",
+            "Rely solely on your rearview camera."
+        ],
+        "answer": "A"
+    }
+  ]
+}
