@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free California DMV Practice Test</title>
+    <meta name="description" content="Free California Driving Tests">
+    <meta name="google-adsense-account" content="ca-pub-5404912904985950">
+    <style>
+        :root {
+          --bg-body: #f5f5f5;
+          --text-color: #333;
+          --container-bg: #fff;
+          --container-shadow: rgba(0, 0, 0, 0.1);
+          --header-bg: #0056b3;
+          --header-text: #ffffff;
+          --info-bg: #e9ecef;
+          --question-border: #ddd;
+          --option-bg: #f8f9fa;
+          --option-hover-bg: #e9ecef;
+          --option-selected-bg: #d1ecf1;
+          --option-selected-border: #bee5eb;
+          --option-correct-bg: #d4edda;
+          --option-correct-border: #c3e6cb;
+          --option-incorrect-bg: #f8d7da;
+          --option-incorrect-border: #f5c6cb;
+          --button-bg: #0056b3;
+          --button-hover-bg: #003d82;
+          --button-disabled-bg: #cccccc;
+          --progress-bg: #e9ecef;
+          --progress-fill: #0056b3;
+          --correct-text: green;
+          --incorrect-text: red;
+        }
+        
+        body {
+          font-family: Arial, sans-serif;
+          line-height: 1.6;
+          margin: 0;
+          padding: 0;
+          background-color: var(--bg-body);
+          color: var(--text-color);
+        }
+        
+        .container {
+          max-width: 800px;
+          margin: 0 auto;
+          padding: 20px;
+          background-color: var(--container-bg);
+          box-shadow: 0 0 10px var(--container-shadow);
+          min-height: 100vh;
+        }
+        
+        header {
+          background-color: var(--header-bg);
+          color: var(--header-text);
+          padding: 20px;
+          text-align: center;
+          margin-bottom: 20px;
+        }
+        
+        h1 {
+          margin: 0;
+        }
+        
+        .test-info {
+          background-color: var(--info-bg);
+          padding: 15px;
+          border-radius: 5px;
+          margin-bottom: 20px;
+        }
+        
+        .question-container {
+          display: none;
+          margin-bottom: 20px;
+          padding: 15px;
+          border: 1px solid var(--question-border);
+          border-radius: 5px;
+        }
+        
+        .question-container.active {
+          display: block;
+        }
+        
+        .options {
+          margin-top: 10px;
+        }
+        
+        .option {
+          padding: 10px;
+          margin: 5px 0;
+          background-color: var(--option-bg);
+          border: 1px solid var(--question-border);
+          border-radius: 3px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+        
+        .option:hover {
+          background-color: var(--option-hover-bg);
+        }
+        
+        .option.selected {
+          background-color: var(--option-selected-bg);
+          border-color: var(--option-selected-border);
+        }
+        
+        .option.correct {
+          background-color: var(--option-correct-bg);
+          border-color: var(--option-correct-border);
+        }
+        
+        .option.incorrect {
+          background-color: var(--option-incorrect-bg);
+          border-color: var(--option-incorrect-border);
+        }
+        
+        .navigation {
+          display: flex;
+          justify-content: space-between;
+          margin-top: 20px;
+        }
+        
+        button {
+          padding: 10px 15px;
+          background-color: var(--button-bg);
+          color: var(--header-text);
+          border: none;
+          border-radius: 3px;
+          cursor: pointer;
+          transition: background-color 0.2s;
+        }
+        
+        button:hover {
+          background-color: var(--button-hover-bg);
+        }
+        
+        button:disabled {
+          background-color: var(--button-disabled-bg);
+          cursor: not-allowed;
+        }
+        
+        #result-container {
+          display: none;
+          text-align: center;
+          margin-top: 20px;
+          padding: 20px;
+          background-color: var(--info-bg);
+          border-radius: 5px;
+        }
+        
+        .progress-bar {
+          height: 10px;
+          background-color: var(--progress-bg);
+          border-radius: 5px;
+          margin-bottom: 20px;
+          overflow: hidden;
+        }
+        
+        .progress {
+          height: 100%;
+          background-color: var(--progress-fill);
+          width: 0%;
+          transition: width 0.3s;
+        }
+        
+        #timer {
+          text-align: center;
+          font-size: 1.2em;
+          margin-bottom: 20px;
+        }
+        
+        .review-container {
+          margin-top: 20px;
+        }
+        
+        .review-question {
+          padding: 15px;
+          margin-bottom: 10px;
+          border: 1px solid var(--question-border);
+          border-radius: 5px;
+        }
+        
+        .answer-status {
+          font-weight: bold;
+          margin-top: 10px;
+        }
+        
+        .correct-text {
+          color: var(--correct-text);
+        }
+        
+        .incorrect-text {
+          color: var(--incorrect-text);
+        }
+        
+        #start-screen {
+          text-align: center;
+          padding: 20px;
+        }
+        
+        #start-btn {
+          font-size: 1.2em;
+          padding: 15px 30px;
+          margin-top: 20px;
+        }
+        
+        .mode-select {
+          margin: 20px 0;
+        }
+        
+        .mode-option {
+          margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>California DMV Practice Test</h1>
+        </header>
+
+        <div id="start-screen">
+            <h2>Welcome to the California DMV Practice Test</h2>
+            <p>Test your knowledge of California driving laws and road safety.</p>
+            
+            <div class="mode-select">
+                <h3>Select Test Mode:</h3>
+                <div class="mode-option">
+                    <input type="radio" id="fullTest" name="testMode" value="full" checked>
+                    <label for="fullTest">Full Test (All 48 Questions)</label>
+                </div>
+                <div class="mode-option">
+                    <input type="radio" id="quickTest" name="testMode" value="quick">
+                    <label for="quickTest">Quick Test (15 Random Questions)</label>
+                </div>
+                <div class="mode-option">
+                    <input type="radio" id="practiceTen" name="testMode" value="practice">
+                    <label for="practiceTen">Practice Mode (10 Random Questions with Immediate Feedback)</label>
+                </div>
+            </div>
+            
+            <button id="start-btn">Start Test</button>
+        </div>
+
+        <div id="test-container" style="display: none;">
+            <div class="test-info">
+                <div id="timer">Time: 00:00</div>
+                <div class="progress-bar">
+                    <div class="progress" id="progress-bar"></div>
+                </div>
+                <p id="question-counter">Question 1 of 48</p>
+            </div>
+            
+            <div id="questions-container"></div>
+            
+            <div class="navigation">
+                <button id="prev-btn" disabled>Previous</button>
+                <button id="cancel-btn">Cancel</button>
+                <button id="next-btn">Next</button>
+                <button id="submit-btn" style="display: none;">Submit Test</button>
+            </div>
+        </div>
+        
+        <div id="result-container">
+            <h2>Test Results</h2>
+            <div id="score-display"></div>
+            <div id="time-taken"></div>
+            <div id="pass-fail"></div>
+            <button id="review-btn">Review Questions</button>
+            <button id="restart-btn">Take Another Test</button>
+        </div>
+        
+        <div id="review-container" style="display: none;">
+            <h2>Review Your Answers</h2>
+            <div id="review-questions"></div>
+            <button id="back-to-results">Back to Results</button>
+        </div>
+    </div>
+
+    <script type="module">
+        // Global variables
+        let questionsData = [];
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let userAnswers = [];
+        let testMode = 'full';
+        let startTime;
+        let timerInterval;
+        let isPracticeMode = false;
+
+        // Questions and answers data
+        const questionResponse = await fetch('./questions.json');
+        questionsData = (await questionResponse.json()).response;
+
+        // DOM elements
+        const startScreen = document.getElementById('start-screen');
+        const testContainer = document.getElementById('test-container');
+        const questionsContainer = document.getElementById('questions-container');
+        const questionCounter = document.getElementById('question-counter');
+        const progressBar = document.getElementById('progress-bar');
+        const prevBtn = document.getElementById('prev-btn');
+        const cancelBtn = document.getElementById('cancel-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const submitBtn = document.getElementById('submit-btn');
+        const resultContainer = document.getElementById('result-container');
+        const scoreDisplay = document.getElementById('score-display');
+        const timeTaken = document.getElementById('time-taken');
+        const passFail = document.getElementById('pass-fail');
+        const reviewBtn = document.getElementById('review-btn');
+        const restartBtn = document.getElementById('restart-btn');
+        const reviewContainer = document.getElementById('review-container');
+        const reviewQuestions = document.getElementById('review-questions');
+        const backToResultsBtn = document.getElementById('back-to-results');
+        const startBtn = document.getElementById('start-btn');
+        const timerDisplay = document.getElementById('timer');
+
+        // Add event listeners
+        startBtn.addEventListener('click', startTest);
+        prevBtn.addEventListener('click', showPreviousQuestion);
+        nextBtn.addEventListener('click', showNextQuestion);
+        submitBtn.addEventListener('click', submitTest);
+        reviewBtn.addEventListener('click', showReview);
+        restartBtn.addEventListener('click', resetTest);
+        cancelBtn.addEventListener('click', resetTest);
+        backToResultsBtn.addEventListener('click', backToResults);
+
+        // Start the test
+        function startTest() {
+            testMode = document.querySelector('input[name="testMode"]:checked').value;
+            isPracticeMode = (testMode === 'practice');
+            
+            // Prepare questions based on test mode
+            if (testMode === 'full') {
+                currentQuestions = [...questionsData];
+            } else if (testMode === 'quick') {
+                currentQuestions = getRandomQuestions(15);
+            } else if (testMode === 'practice') {
+                currentQuestions = getRandomQuestions(10);
+            }
+            
+            // Initialize user answers
+            userAnswers = Array(currentQuestions.length).fill(null);
+            
+            // Hide start screen, show test container
+            startScreen.style.display = 'none';
+            testContainer.style.display = 'block';
+            
+            // Update question counter
+            updateQuestionCounter();
+            
+            // Create questions
+            createQuestions();
+            
+            // Show first question
+            showQuestion(0);
+            
+            // Start timer
+            startTimer();
+        }
+
+        // Get random questions
+        function getRandomQuestions(count) {
+            const shuffled = [...questionsData].sort(() => 0.5 - Math.random());
+            return shuffled.slice(0, count);
+        }
+
+        // Create all question elements
+        function createQuestions() {
+            questionsContainer.innerHTML = '';
+            
+            currentQuestions.forEach((q, index) => {
+                const questionElem = document.createElement('div');
+                questionElem.className = 'question-container';
+                questionElem.id = `question-${index}`;
+                
+                const questionText = document.createElement('h3');
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                questionElem.appendChild(questionText);
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                q.options.forEach((option, optIndex) => {
+                    const optionElem = document.createElement('div');
+                    optionElem.className = 'option';
+                    optionElem.textContent = `${String.fromCharCode(65 + optIndex)}. ${option}`;
+                    optionElem.dataset.index = optIndex;
+                    optionElem.dataset.value = String.fromCharCode(65 + optIndex);
+                    
+                    optionElem.addEventListener('click', () => {
+                        selectOption(index, optionElem);
+                    });
+                    
+                    optionsDiv.appendChild(optionElem);
+                });
+                
+                questionElem.appendChild(optionsDiv);
+                questionsContainer.appendChild(questionElem);
+            });
+        }
+
+        // Show a specific question
+        function showQuestion(index) {
+            // Hide all questions
+            document.querySelectorAll('.question-container').forEach(q => {
+                q.classList.remove('active');
+            });
+            
+            // Show current question
+            document.getElementById(`question-${index}`).classList.add('active');
+            
+            // Update current question index
+            currentQuestionIndex = index;
+            
+            // Update navigation buttons
+            updateNavigationButtons();
+            
+            // Update progress bar
+            updateProgressBar();
+        }
+
+        // Select an option
+        function selectOption(questionIndex, optionElem) {
+            // Remove selected class from all options in this question
+            const allOptions = document.querySelectorAll(`#question-${questionIndex} .option`);
+            allOptions.forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Add selected class to this option
+            optionElem.classList.add('selected');
+            
+            // Save user's answer
+            userAnswers[questionIndex] = optionElem.dataset.value;
+            
+            // In practice mode, show immediate feedback
+            if (isPracticeMode) {
+                const correctAnswer = currentQuestions[questionIndex].answer;
+                if (optionElem.dataset.value === correctAnswer) {
+                    optionElem.classList.add('correct');
+                } else {
+                    optionElem.classList.add('incorrect');
+                    // Highlight the correct answer
+                    allOptions.forEach(opt => {
+                        if (opt.dataset.value === correctAnswer) {
+                            opt.classList.add('correct');
+                        }
+                    });
+                }
+            }
+            
+            // Update navigation buttons
+            updateNavigationButtons();
+        }
+
+
+
+        // Show previous question
+        function showPreviousQuestion() {
+            if (currentQuestionIndex > 0) {
+                showQuestion(currentQuestionIndex - 1);
+            }
+        }
+
+        // Show next question
+        function showNextQuestion() {
+            if (currentQuestionIndex < currentQuestions.length - 1) {
+                showQuestion(currentQuestionIndex + 1);
+            }
+        }
+
+        // Update navigation buttons
+        function updateNavigationButtons() {
+            // Disable/enable previous button
+            prevBtn.disabled = currentQuestionIndex === 0;
+            
+            // Show submit button on last question, otherwise show next button
+            if (currentQuestionIndex === currentQuestions.length - 1) {
+                nextBtn.style.display = 'none';
+                submitBtn.style.display = 'block';
+            } else {
+                nextBtn.style.display = 'block';
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // Update the question counter
+        function updateQuestionCounter() {
+            questionCounter.textContent = `Question ${currentQuestionIndex + 1} of ${currentQuestions.length}`;
+        }
+
+        // Update progress bar
+        function updateProgressBar() {
+            const progress = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            updateQuestionCounter();
+        }
+
+        // Start the timer
+        function startTimer() {
+            startTime = new Date();
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        // Update the timer display
+        function updateTimer() {
+            const now = new Date();
+            const timeDiff = Math.floor((now - startTime) / 1000); // in seconds
+            
+            const minutes = Math.floor(timeDiff / 60);
+            const seconds = timeDiff % 60;
+            
+            timerDisplay.textContent = `Time: ${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Submit the test
+        function submitTest() {
+            // Stop the timer
+            clearInterval(timerInterval);
+            
+            // Calculate score
+            const score = calculateScore();
+            const percentage = Math.round((score.correct / currentQuestions.length) * 100);
+            
+            // Calculate time taken
+            const endTime = new Date();
+            const timeInSeconds = Math.floor((endTime - startTime) / 1000);
+            const minutes = Math.floor(timeInSeconds / 60);
+            const seconds = timeInSeconds % 60;
+            
+            // Update result display
+            scoreDisplay.innerHTML = `<h3>Score: ${score.correct} / ${currentQuestions.length} (${percentage}%)</h3>`;
+            timeTaken.textContent = `Time taken: ${minutes}m ${seconds}s`;
+            
+            // Pass or fail message (70% is passing in California)
+            if (percentage >= 70) {
+                passFail.innerHTML = '<h3 class="correct-text">You passed!</h3><p>Congratulations! You have passed the practice test.</p>';
+            } else {
+                passFail.innerHTML = '<h3 class="incorrect-text">You did not pass</h3><p>You need a 70% or higher to pass. Keep studying and try again!</p>';
+            }
+            
+            // Hide test container, show result container
+            testContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+        }
+
+        // Calculate the score
+        function calculateScore() {
+            let correct = 0;
+            let incorrect = 0;
+            let unanswered = 0;
+            
+            userAnswers.forEach((answer, index) => {
+                if (answer === null) {
+                    unanswered++;
+                } else if (answer === currentQuestions[index].answer) {
+                    correct++;
+                } else {
+                    incorrect++;
+                }
+            });
+            
+            return { correct, incorrect, unanswered };
+        }
+
+        // Show the review of questions
+        function showReview() {
+            reviewQuestions.innerHTML = '';
+            
+            currentQuestions.forEach((q, index) => {
+                const reviewQuestion = document.createElement('div');
+                reviewQuestion.className = 'review-question';
+                
+                const questionText = document.createElement('h3');
+                questionText.textContent = `${index + 1}. ${q.question}`;
+                reviewQuestion.appendChild(questionText);
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'options';
+                
+                q.options.forEach((option, optIndex) => {
+                    const optionElem = document.createElement('div');
+                    const optionValue = String.fromCharCode(65 + optIndex);
+                    
+                    // Determine class based on user's answer and correct answer
+                    if (userAnswers[index] === optionValue) {
+                        if (optionValue === q.answer) {
+                            optionElem.className = 'option correct';
+                        } else {
+                            optionElem.className = 'option incorrect';
+                        }
+                    } else if (optionValue === q.answer) {
+                        optionElem.className = 'option correct';
+                    } else {
+                        optionElem.className = 'option';
+                    }
+                    
+                    optionElem.textContent = `${optionValue}. ${option}`;
+                    optionsDiv.appendChild(optionElem);
+                });
+                
+                reviewQuestion.appendChild(optionsDiv);
+                
+                // Add answer status
+                const answerStatus = document.createElement('div');
+                answerStatus.className = 'answer-status';
+                
+                if (userAnswers[index] === null) {
+                    answerStatus.textContent = 'Not answered';
+                    answerStatus.className += ' incorrect-text';
+                } else if (userAnswers[index] === q.answer) {
+                    answerStatus.textContent = 'Correct';
+                    answerStatus.className += ' correct-text';
+                } else {
+                    answerStatus.textContent = `Incorrect. Correct answer: ${q.answer}`;
+                    answerStatus.className += ' incorrect-text';
+                }
+                
+                reviewQuestion.appendChild(answerStatus);
+                reviewQuestions.appendChild(reviewQuestion);
+            });
+            
+            // Hide result container, show review container
+            resultContainer.style.display = 'none';
+            reviewContainer.style.display = 'block';
+        }
+
+        // Go back to results
+        function backToResults() {
+            reviewContainer.style.display = 'none';
+            resultContainer.style.display = 'block';
+        }
+
+        // Reset the test
+        function resetTest() {
+            // Clear timer
+            clearInterval(timerInterval);
+            
+            // Reset user answers
+            userAnswers = [];
+            
+            // Hide result container, show start screen
+            testContainer.style.display = 'none';
+            resultContainer.style.display = 'none';
+            reviewContainer.style.display = 'none';
+            startScreen.style.display = 'block';
+        }
+    </script>
+</body>
+</html> 
