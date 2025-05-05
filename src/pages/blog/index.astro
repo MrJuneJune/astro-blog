@@ -17,6 +17,8 @@ const posts = (await getCollection('blog')).sort(
 	<head>
 		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
     <meta name="google-adsense-account" content="ca-pub-5404912904985950">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5404912904985950"
+     crossorigin="anonymous"></script>
 		<style>
 			ul {
 				display: flex;
@@ -113,4 +115,7 @@ const posts = (await getCollection('blog')).sort(
 	    </main>
 	  <Footer />
 	</body>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({});
+  </script>
 </html>
